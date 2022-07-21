@@ -12,7 +12,6 @@ specifiers:
   eslint-plugin-svelte3: ^4.0.0
   postcss: ^8.4.14
   prettier: ^2.7.1
-  prettier-plugin-svelte: ^2.7.0
   prettier-plugin-tailwindcss: ^0.1.12
   svelte: ^3.44.0
   svelte-check: ^2.7.1
@@ -36,7 +35,6 @@ devDependencies:
   eslint-plugin-svelte3: 4.0.0_piwa6j2njmnknm35bh3wz5v52y
   postcss: 8.4.14
   prettier: 2.7.1
-  prettier-plugin-svelte: 2.7.0_o3ioganyptcsrh6x4hnxvjkpqi
   prettier-plugin-tailwindcss: 0.1.12_prettier@2.7.1
   svelte: 3.49.0
   svelte-check: 2.8.0_nxvsp6sjiltnatqa6jdm4mr6zu
@@ -1656,16 +1654,6 @@ packages:
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
-    dev: true
-
-  /prettier-plugin-svelte/2.7.0_o3ioganyptcsrh6x4hnxvjkpqi:
-    resolution: {integrity: sha512-fQhhZICprZot2IqEyoiUYLTRdumULGRvw0o4dzl5jt0jfzVWdGqeYW27QTWAeXhoupEZJULmNoH3ueJwUWFLIA==}
-    peerDependencies:
-      prettier: ^1.16.4 || ^2.0.0
-      svelte: ^3.2.0
-    dependencies:
-      prettier: 2.7.1
-      svelte: 3.49.0
     dev: true
 
   /prettier-plugin-tailwindcss/0.1.12_prettier@2.7.1:
