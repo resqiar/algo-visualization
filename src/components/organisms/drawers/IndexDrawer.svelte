@@ -18,7 +18,8 @@
 				<div class="flex items-center gap-4">
 					<label
 						for="left-drawer"
-						class="btn btn-outline btn-circle btn-sm drawer-button"
+						aria-label="Close Drawer"
+						class="btn btn-circle btn-outline btn-sm drawer-button"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
