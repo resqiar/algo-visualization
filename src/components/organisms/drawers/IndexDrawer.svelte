@@ -1,5 +1,10 @@
-<script>
+<script lang="ts">
+	import { drawerData } from '../../../data/drawerData';
+
 	import Divider from '../../atoms/divider/Divider.svelte';
+
+	export let activeIndex: number;
+	export let handleDrawerChange: (i: number) => void;
 </script>
 
 <div class="drawer">
@@ -46,7 +51,14 @@
 			<Divider />
 
 			<!-- ITEMS -->
-			<li><button class="active">Big O Notation</button></li>
+			{#each drawerData as v (v.id)}
+				<li class="py-1">
+					<button
+						on:click={() => handleDrawerChange(v.id)}
+						class={activeIndex === v.id ? 'active' : ''}>{v.title}</button
+					>
+				</li>
+			{/each}
 		</ul>
 	</div>
 </div>
