@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { drawerData } from '../../../data/drawerData';
+	import { base } from '$app/paths';
 
 	import Divider from '../../atoms/divider/Divider.svelte';
 
@@ -24,7 +25,7 @@
 					<label
 						for="left-drawer"
 						aria-label="Close Drawer"
-						class="btn btn-circle btn-outline btn-sm drawer-button"
+						class="drawer-button btn btn-outline btn-circle btn-sm"
 					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -39,7 +40,7 @@
 							/>
 						</svg>
 					</label>
-					<a class="text-2xl font-bold" href="/">Algo Visualization</a>
+					<a class="text-2xl font-bold" href="{base}/">Algo Visualization</a>
 				</div>
 
 				<p class="text-sm">

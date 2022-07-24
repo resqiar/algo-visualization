@@ -1,3 +1,7 @@
+<script lang="ts">
+	import { base } from '$app/paths';
+</script>
+
 <div class="navbar bg-base-100">
 	<!-- LEFT -->
 	<div class="navbar-start">
@@ -24,7 +28,7 @@
 
 	<!-- CENTER -->
 	<div class="navbar-center">
-		<a class="text-2xl font-bold" href="/">Algo-V</a>
+		<a class="text-2xl font-bold" href="{base}/">Algo-V</a>
 	</div>
 
 	<!-- RIGHT -->
