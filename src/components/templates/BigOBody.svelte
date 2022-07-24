@@ -28,7 +28,9 @@
 <section>
 	<div class="mt-8 flex justify-center py-2">
 		<!-- First algorithm -->
-		<button on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_LOOP)} class="btn"
+		<button
+			on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_LOOP)}
+			class="btn {activeTitle === BIGO_TITLE.ADD_UP_TO_LOOP ? 'btn-primary' : undefined}"
 			>AddUpTo (Loop)</button
 		>
 
@@ -36,7 +38,9 @@
 		<div class="divider divider-horizontal px-4" />
 
 		<!-- Second algorithm -->
-		<button on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_MATH)} class="btn"
+		<button
+			on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_MATH)}
+			class="btn {activeTitle === BIGO_TITLE.ADD_UP_TO_MATH ? 'btn-primary' : undefined}"
 			>AddUpTo (Math)</button
 		>
 	</div>
