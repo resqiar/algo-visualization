@@ -1,38 +1,11 @@
-# create-svelte
+# Algo-V (V for Visualization)
+Algo-V is my way to learn algorithm. Algo is hard without any visual approach, so here it is. The process is highly inspired by one amazing Algorithm course in [Udemy](https://www.udemy.com/course/js-algorithms-and-data-structures-masterclass/) by [Colt Steele](https://www.udemy.com/user/coltsteele/).
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+**The Project is WIP (Work in Progress)**
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm init svelte
-
-# create a new project in my-app
-npm init svelte my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+What I learn from building this:
+1. Neovim 
+2. SvelteKit
+3. DaisyUI
+4. Data Driven Documents (D3.js)
+5. Algorithms
