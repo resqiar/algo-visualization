@@ -6,4 +6,4 @@
 	export let code: string;
 </script>
 
-<Highlight language={typescript} {code} />
+<Highlight language="{typescript}" {code} />

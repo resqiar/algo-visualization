@@ -2,6 +2,7 @@
 	import { BIGO_TITLE, bigOFunction } from '../../data/functionData';
 	import atomOneDark from 'svelte-highlight/styles/github-dark';
 	import Highlighter from '../atoms/utils/Highlighter.svelte';
+	import PlotInput from '../atoms/input/PlotInput.svelte';
 
 	// The title of the choosen algorithm
 	// this variable has a responsibility
@@ -25,8 +26,8 @@
 	{@html atomOneDark}
 </svelte:head>
 
-<section>
-	<div class="mt-8 flex justify-center py-2">
+<section class="flex w-full items-center justify-center py-8">
+	<div class="flex justify-center gap-4">
 		<!-- First algorithm -->
 		<button
 			on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_LOOP)}
@@ -34,15 +35,20 @@
 			>AddUpTo (Loop)</button
 		>
 
-		<!-- Divider horizontal -->
-		<div class="divider divider-horizontal px-4" />
-
 		<!-- Second algorithm -->
 		<button
 			on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_MATH)}
 			class="btn {activeTitle === BIGO_TITLE.ADD_UP_TO_MATH ? 'btn-primary' : undefined}"
 			>AddUpTo (Math)</button
 		>
+	</div>
+
+	<!-- Divider horizontal -->
+	<div class="divider divider-horizontal" />
+
+	<div>
+		<!-- Plot N Input -->
+		<PlotInput placeholder="input desired 'n'" />
 	</div>
 </section>
 

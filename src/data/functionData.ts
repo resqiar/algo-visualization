@@ -1,16 +1,16 @@
 interface IFunctionData<T> {
-  code: string
-  title: T
+	code: string;
+	title: T;
 }
 
 export enum BIGO_TITLE {
-  ADD_UP_TO_LOOP = 'add-up-to-loop',
-  ADD_UP_TO_MATH = 'add-up-to-math'
+	ADD_UP_TO_LOOP = 'add-up-to-loop',
+	ADD_UP_TO_MATH = 'add-up-to-math',
 }
 
 export const bigOFunction: IFunctionData<BIGO_TITLE>[] = [
-  {
-    code: `
+	{
+		code: `
       function addUpTo(n: number){
           let total = 0;
   
@@ -21,14 +21,14 @@ export const bigOFunction: IFunctionData<BIGO_TITLE>[] = [
           return total;
       }
   `,
-    title: BIGO_TITLE.ADD_UP_TO_LOOP
-  },
-  {
-    code: `
+		title: BIGO_TITLE.ADD_UP_TO_LOOP,
+	},
+	{
+		code: `
       function addUpTo(n: number){
           return n * (n + 1) / 2;
       }
   `,
-    title: BIGO_TITLE.ADD_UP_TO_MATH
-  }
-]
+		title: BIGO_TITLE.ADD_UP_TO_MATH,
+	},
+];
