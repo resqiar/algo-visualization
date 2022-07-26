@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { addUpToLoop, addUpToMath, bigOMockupFunction, BIGO_TITLE } from '../../data/bigOData';
+	import { onDestroy } from 'svelte';
+	import { bigOMockupFunction, BIGO_TITLE } from '../../data/bigOData';
+	import { initWorker, terminateWorker } from '../../libs/worker';
 	import atomOneDark from 'svelte-highlight/styles/github-dark';
 	import Highlighter from '../atoms/utils/Highlighter.svelte';
 	import PlotInput from '../atoms/input/PlotInput.svelte';
@@ -33,7 +35,7 @@
 	let xData: number[] = [];
 	let yData: number[] = [];
 
-	function doCalculation() {
+	async function calculate() {
 		// if state currently loading
 		// or the input is none/undefined,
 		// return. dont proceed further.
@@ -42,47 +44,24 @@
 		// set loading state
 		loading = true;
 
-		// declare start and end to measure function time
-		let startPoint: number = 0;
-		let endPoint: number = 0;
+		// Initialize background worker to do
+		// heavy lifting jobs such as looping,
+		// performance time tracking, calculating, etc.
+		// Using separate threads will prevent browser to crash
+		// Whenever the input is huge > 1Billion.
+		const worker = await initWorker({
+			activeTitle: activeTitle,
+			inputValue: inputValue,
+		});
 
-		switch (activeTitle) {
-			case BIGO_TITLE.ADD_UP_TO_LOOP:
-				startPoint = performance.now();
+		worker.onmessage = function (event: MessageEvent<number>) {
+			// update data according to the result
+			// of the background thread.
+			updateData(inputValue, event.data);
 
-				// addUpToLoop
-				addUpToLoop(inputValue);
-
-				endPoint = performance.now();
-				break;
-
-			case BIGO_TITLE.ADD_UP_TO_MATH:
-				startPoint = performance.now();
-
-				// addUpToMath
-				addUpToMath(inputValue);
-
-				endPoint = performance.now();
-				break;
-
-			default:
-				break;
-		}
-
-		// time taken in seconds
-		const timeTaken = (endPoint - startPoint) / 1000;
-
-		// update data according to the result
-		updateData(inputValue, timeTaken);
-
-		// reset time to default
-		startPoint = 0;
-		endPoint = 0;
-
-		setTimeout(() => {
 			// reset loading after 1 second
 			loading = false;
-		}, 1000);
+		};
 	}
 
 	// Update the array of x & y.
@@ -100,7 +79,17 @@
 	$: if (activeTitle) {
 		xData = [];
 		yData = [];
+
+		// reset loading and inputValue
+		loading = false;
+		inputValue = 0;
+
+		// stop background process
+		terminateWorker();
 	}
+
+	// Destroy background worker when component unmounted.
+	onDestroy(() => terminateWorker());
 </script>
 
 <svelte:head>
@@ -134,9 +123,7 @@
 			placeholder="input desired 'n' and press Enter"
 			bind:inputValue
 			on:keyup={(e) => {
-				if (e.key === 'Enter') {
-					doCalculation();
-				}
+				if (e.key === 'Enter') calculate();
 			}}
 		/>
 
