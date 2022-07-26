@@ -8,7 +8,7 @@
 		<label
 			for="left-drawer"
 			aria-label="Open Drawer"
-			class="btn btn-ghost btn-square drawer-button"
+			class="btn btn-square btn-ghost drawer-button"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@
 	<!-- RIGHT -->
 	<div class="navbar-end">
 		<!-- GITHUB BUTTON -->
-		<button aria-label="Go to GitHub" class="btn btn-ghost btn-square">
+		<button aria-label="Go to GitHub" class="btn btn-square btn-ghost">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 				<path
 					fill="rgba(255,255,255,0.8)"

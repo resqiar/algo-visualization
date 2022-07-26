@@ -9,7 +9,7 @@
 		id="plot-input"
 		{placeholder}
 		class="input input-bordered w-full max-w-xs"
-		bind:value={inputValue}
+		bind:value="{inputValue}"
 		on:keyup
 	/>
 </div>

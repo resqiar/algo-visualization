@@ -1,42 +1,42 @@
 {
-  "name": "algo-visualization",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "vite dev --port 3030",
-    "build": "yarn run check && vite build",
-    "package": "svelte-kit package",
-    "preview": "vite preview --port 3030",
-    "prepare": "svelte-kit sync",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
-    "lint": "prettier --check --plugin-search-dir=. . && eslint .",
-    "format": "prettier --write --plugin-search-dir=. ."
-  },
-  "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
-    "@sveltejs/adapter-static": "1.0.0-next.38",
-    "@sveltejs/kit": "next",
-    "@typescript-eslint/eslint-plugin": "5.30.7",
-    "@typescript-eslint/parser": "5.30.7",
-    "autoprefixer": "10.4.7",
-    "eslint": "8.20.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-svelte3": "4.0.0",
-    "postcss": "8.4.14",
-    "prettier": "2.7.1",
-    "prettier-plugin-tailwindcss": "0.1.12",
-    "svelte": "3.49.0",
-    "svelte-check": "2.8.0",
-    "svelte-highlight": "6.2.0",
-    "svelte-preprocess": "4.10.7",
-    "tailwindcss": "3.1.6",
-    "tslib": "2.4.0",
-    "typescript": "4.7.4",
-    "vite": "3.0.2"
-  },
-  "type": "module",
-  "dependencies": {
-    "chart.js": "^3.8.2",
-    "daisyui": "2.19.1"
-  }
+	"name": "algo-visualization",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "vite dev --port 3030",
+		"build": "yarn run check && vite build",
+		"package": "svelte-kit package",
+		"preview": "vite preview --port 3030",
+		"prepare": "svelte-kit sync",
+		"check": "svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
+		"format": "prettier --write --plugin-search-dir=. ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/adapter-static": "1.0.0-next.38",
+		"@sveltejs/kit": "next",
+		"@typescript-eslint/eslint-plugin": "5.30.7",
+		"@typescript-eslint/parser": "5.30.7",
+		"autoprefixer": "10.4.7",
+		"eslint": "8.20.0",
+		"eslint-config-prettier": "8.5.0",
+		"eslint-plugin-svelte3": "4.0.0",
+		"postcss": "8.4.14",
+		"prettier": "2.7.1",
+		"prettier-plugin-tailwindcss": "0.1.12",
+		"svelte": "3.49.0",
+		"svelte-check": "2.8.0",
+		"svelte-highlight": "6.2.0",
+		"svelte-preprocess": "4.10.7",
+		"tailwindcss": "3.1.6",
+		"tslib": "2.4.0",
+		"typescript": "4.7.4",
+		"vite": "3.0.2"
+	},
+	"type": "module",
+	"dependencies": {
+		"chart.js": "^3.8.2",
+		"daisyui": "2.19.1"
+	}
 }

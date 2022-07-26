@@ -14,13 +14,13 @@
 </script>
 
 <!-- META -->
-<Meta />
+<meta />
 
 <!-- DRAWER WRAPPER -->
-<IndexDrawer activeIndex={activeDrawer} {handleDrawerChange}>
+<IndexDrawer activeIndex="{activeDrawer}" {handleDrawerChange}>
 	<!-- HEADER -->
 	<IndexHeader />
 
 	<!-- DYNAMIC COMPONENT BODY -->
-	<svelte:component this={drawerData[activeDrawer].component} />
+	<svelte:component this="{drawerData[activeDrawer].component}" />
 </IndexDrawer>
