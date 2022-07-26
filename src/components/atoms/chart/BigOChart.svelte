@@ -32,4 +32,4 @@
 	}
 </script>
 
-<canvas bind:this="{canvasRef}" width="300" height="200" />
+<canvas bind:this={canvasRef} width="300" height="200" />
