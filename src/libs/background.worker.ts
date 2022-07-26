@@ -26,7 +26,8 @@ onmessage = (props: MessageEvent<Props>) => {
       break;
   }
 
-  const timeTaken = (endPoint - startPoint) / 1000;
+  // Time taken in millisecond
+  const timeTaken = (endPoint - startPoint);
   postMessage(timeTaken);
 
   // reset time to default

@@ -59,7 +59,7 @@
 			// of the background thread.
 			updateData(inputValue, event.data);
 
-			// reset loading after 1 second
+			// reset loading
 			loading = false;
 		};
 	}

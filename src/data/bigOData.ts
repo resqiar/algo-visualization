@@ -7,51 +7,51 @@ import type { ChartData, ChartOptions } from 'chart.js';
 // =================================================================================== //
 
 export const bigOInitialData: ChartData = {
-	datasets: [
-		{
-			label: 'Function Time Scale',
-			data: [],
-			borderColor: 'yellow',
-			pointBackgroundColor: '#fff',
-			pointBorderColor: '#fff',
-			borderWidth: 2,
-		},
-	],
+  datasets: [
+    {
+      label: 'Function Time Scale',
+      data: [],
+      borderColor: 'yellow',
+      pointBackgroundColor: '#fff',
+      pointBorderColor: '#fff',
+      borderWidth: 2,
+    },
+  ],
 };
 
 export const bigOOptions: ChartOptions = {
-	plugins: {
-		legend: {
-			labels: {
-				usePointStyle: true,
-				boxWidth: 0,
-				color: 'yellow',
-			},
-		},
-	},
-	scales: {
-		y: {
-			grid: {
-				color: 'rgb(255, 255, 255, 0.3)',
-				lineWidth: 0.5,
-			},
-			title: {
-				display: true,
-				text: 'Time taken in second',
-			},
-			beginAtZero: true,
-		},
-		x: {
-			grid: {
-				color: 'rgb(255, 255, 255, 0.3)',
-				lineWidth: 0.5,
-			},
-			title: {
-				display: true,
-				text: 'Number of input (n)',
-			},
-		},
-	},
+  plugins: {
+    legend: {
+      labels: {
+        usePointStyle: true,
+        boxWidth: 0,
+        color: 'yellow',
+      },
+    },
+  },
+  scales: {
+    y: {
+      grid: {
+        color: 'rgb(255, 255, 255, 0.3)',
+        lineWidth: 0.5,
+      },
+      title: {
+        display: true,
+        text: 'Time taken in millisecond',
+      },
+      beginAtZero: true,
+    },
+    x: {
+      grid: {
+        color: 'rgb(255, 255, 255, 0.3)',
+        lineWidth: 0.5,
+      },
+      title: {
+        display: true,
+        text: 'Number of input (n)',
+      },
+    },
+  },
 };
 
 // =================================================================================== //
@@ -61,18 +61,18 @@ export const bigOOptions: ChartOptions = {
 // =================================================================================== //
 
 interface IMockupFunctionData<T> {
-	code: string;
-	title: T;
+  code: string;
+  title: T;
 }
 
 export enum BIGO_TITLE {
-	ADD_UP_TO_LOOP = 'add-up-to-loop',
-	ADD_UP_TO_MATH = 'add-up-to-math',
+  ADD_UP_TO_LOOP = 'add-up-to-loop',
+  ADD_UP_TO_MATH = 'add-up-to-math',
 }
 
 export const bigOMockupFunction: IMockupFunctionData<BIGO_TITLE>[] = [
-	{
-		code: `
+  {
+    code: `
       function addUpTo(n: number){
           let total = 0;
   
@@ -83,16 +83,16 @@ export const bigOMockupFunction: IMockupFunctionData<BIGO_TITLE>[] = [
           return total;
       }
   `,
-		title: BIGO_TITLE.ADD_UP_TO_LOOP,
-	},
-	{
-		code: `
+    title: BIGO_TITLE.ADD_UP_TO_LOOP,
+  },
+  {
+    code: `
       function addUpTo(n: number){
           return n * (n + 1) / 2;
       }
   `,
-		title: BIGO_TITLE.ADD_UP_TO_MATH,
-	},
+    title: BIGO_TITLE.ADD_UP_TO_MATH,
+  },
 ];
 
 // =================================================================================== //
@@ -102,13 +102,13 @@ export const bigOMockupFunction: IMockupFunctionData<BIGO_TITLE>[] = [
 // =================================================================================== //
 
 export function addUpToLoop(n: number) {
-	let total = 0;
-	for (let i = 0; i < n; i++) {
-		total = +i;
-	}
-	return total;
+  let total = 0;
+  for (let i = 0; i < n; i++) {
+    total = +i;
+  }
+  return total;
 }
 
 export function addUpToMath(n: number) {
-	return (n * (n + 1)) / 2;
+  return (n * (n + 1)) / 2;
 }
