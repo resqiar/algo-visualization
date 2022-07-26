@@ -3,6 +3,7 @@
 	import atomOneDark from 'svelte-highlight/styles/github-dark';
 	import Highlighter from '../atoms/utils/Highlighter.svelte';
 	import PlotInput from '../atoms/input/PlotInput.svelte';
+	import BigOChart from '../atoms/chart/BigOChart.svelte';
 
 	// The title of the choosen algorithm
 	// this variable has a responsibility
@@ -19,6 +20,8 @@
 	// this active code will be passed to
 	// Highlighter atom-component.
 	$: activeCode = bigOFunction.filter((v) => v.title === activeTitle)[0];
+
+	let inputValue: number | null = null;
 </script>
 
 <svelte:head>
@@ -48,7 +51,7 @@
 
 	<div>
 		<!-- Plot N Input -->
-		<PlotInput placeholder="input desired 'n'" />
+		<PlotInput placeholder="input desired 'n'" bind:inputValue />
 	</div>
 </section>
 
@@ -61,5 +64,7 @@
 	</div>
 
 	<!-- CHART -->
-	<div class="flex-1">lorem</div>
+	<div class="flex-1">
+		<BigOChart xData={[]} yData={[]} />
+	</div>
 </section>
