@@ -7,5 +7,5 @@ What I learn from building this:
 1. Neovim 
 2. SvelteKit
 3. DaisyUI
-4. Data Driven Documents (D3.js)
+4. Plot data to chart (ChartJS)
 5. Algorithms
