@@ -10,5 +10,6 @@
 		{placeholder}
 		class="input input-bordered w-full max-w-xs"
 		bind:value={inputValue}
+		on:keyup
 	/>
 </div>
