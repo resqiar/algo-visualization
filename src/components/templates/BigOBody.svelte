@@ -80,9 +80,8 @@
 		xData = [];
 		yData = [];
 
-		// reset loading and inputValue
+		// reset loading
 		loading = false;
-		inputValue = 0;
 
 		// stop background process
 		terminateWorker();
@@ -97,7 +96,7 @@
 	{@html atomOneDark}
 </svelte:head>
 
-<section class="flex w-full items-center justify-center py-8">
+<section class="flex w-full items-start justify-center py-8">
 	<div class="flex w-full justify-end gap-4">
 		<!-- First algorithm -->
 		<button
@@ -121,6 +120,9 @@
 		<!-- Plot N Input -->
 		<PlotInput
 			placeholder="input desired 'n' and press Enter"
+			label={activeTitle === BIGO_TITLE.ADD_UP_TO_LOOP && inputValue >= 1000000000000
+				? 'Did you know that 1 trillion loop takes approximately 4 hours to complete? 😳'
+				: ''}
 			bind:inputValue
 			on:keyup={(e) => {
 				if (e.key === 'Enter') calculate();

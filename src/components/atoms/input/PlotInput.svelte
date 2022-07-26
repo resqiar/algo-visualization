@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let placeholder: string = '';
+	export let label: string = '';
 	export let inputValue: number | null = null;
 </script>
 
@@ -12,4 +13,11 @@
 		bind:value="{inputValue}"
 		on:keyup
 	/>
+
+  <!-- Label Input -->
+  {#if label}
+    <label class="label" for="plot-input">
+      <span class="label-text-alt">{label}</span>
+    </label>
+  {/if}
 </div>
