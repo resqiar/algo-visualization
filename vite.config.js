@@ -8,6 +8,9 @@ const config = {
   },
   ssr: {
     noExternal: ['chart.js/**']
+  },
+  build: {
+    target: 'esnext'
   }
 };
 
