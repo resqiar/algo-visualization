@@ -38,8 +38,12 @@ export const bigOOptions: ChartOptions = {
       title: {
         display: true,
         text: 'Time taken in millisecond',
+        color: 'yellow'
       },
       beginAtZero: true,
+      ticks: {
+        color: 'rgb(255, 255, 255, 0.8)',
+      }
     },
     x: {
       grid: {
@@ -49,7 +53,11 @@ export const bigOOptions: ChartOptions = {
       title: {
         display: true,
         text: 'Number of input (n)',
+        color: 'yellow'
       },
+      ticks: {
+        color: 'rgb(255, 255, 255, 0.8)',
+      }
     },
   },
 };

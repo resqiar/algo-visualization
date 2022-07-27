@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import ThemeSwitchMenu from '../../../components/atoms/menu/ThemeSwitchMenu.svelte';
 </script>
 
 <div class="navbar bg-base-100">
@@ -8,7 +9,7 @@
 		<label
 			for="left-drawer"
 			aria-label="Open Drawer"
-			class="btn btn-square btn-ghost drawer-button"
+			class="btn btn-ghost btn-square drawer-button"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -33,8 +34,11 @@
 
 	<!-- RIGHT -->
 	<div class="navbar-end">
+		<!-- Switch between themes menu -->
+		<ThemeSwitchMenu />
+
 		<!-- GITHUB BUTTON -->
-		<button aria-label="Go to GitHub" class="btn btn-square btn-ghost">
+		<button aria-label="Go to GitHub" class="btn btn-ghost btn-square">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
 				<path
 					fill="rgba(255,255,255,0.8)"

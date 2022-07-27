@@ -32,4 +32,6 @@
 	}
 </script>
 
-<canvas bind:this={canvasRef} width="300" height="200" />
+<div class="w-full rounded-xl bg-neutral px-4 py-2">
+	<canvas bind:this={canvasRef} width="300" height="200" />
+</div>
