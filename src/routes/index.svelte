@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { drawerData } from '../data/drawerData';
+	import { themeChange } from 'theme-change';
 	import Meta from '../components/atoms/meta/Meta.svelte';
 	import IndexDrawer from '../components/organisms/drawers/IndexDrawer.svelte';
 	import IndexHeader from '../components/organisms/headers/IndexHeader.svelte';
-	import { drawerData } from '../data/drawerData';
 
 	// the id of the active drawer
 	let activeDrawer = 0;
@@ -11,6 +13,11 @@
 	function handleDrawerChange(i: number) {
 		activeDrawer = i;
 	}
+
+	// Mount saved theme from local storage
+	onMount(() => {
+		themeChange(false);
+	});
 </script>
 
 <!-- META -->
