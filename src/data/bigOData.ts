@@ -24,6 +24,14 @@ export const bigOInitialData: ChartData = {
       pointBorderColor: '#fff',
       borderWidth: 2,
     },
+    {
+      label: '',
+      data: [],
+      borderColor: 'purple',
+      pointBackgroundColor: '#fff',
+      pointBorderColor: '#fff',
+      borderWidth: 2,
+    },
   ],
 };
 
@@ -84,6 +92,7 @@ interface IMockupFunctionData<T> {
 export enum BIGO_TITLE {
   ADD_UP_TO_LOOP = 'add-up-to-loop',
   ADD_UP_TO_MATH = 'add-up-to-math',
+  ARRAY_OF_PAIRS = 'array-of-pairs',
 }
 
 export const bigOMockupFunction: IMockupFunctionData<BIGO_TITLE>[] = [
@@ -109,6 +118,22 @@ export const bigOMockupFunction: IMockupFunctionData<BIGO_TITLE>[] = [
   `,
     title: BIGO_TITLE.ADD_UP_TO_MATH,
   },
+  {
+    code: `
+      function arrayOfPairs(n: number) {
+        const result = [];
+
+        for (let i = 0; i < n; i++) {
+          for (let j = 0; j < n; j++) {
+            result.push([i, j])
+          }
+        }
+
+        return result;
+    }
+  `,
+    title: BIGO_TITLE.ARRAY_OF_PAIRS,
+  },
 ];
 
 // =================================================================================== //
@@ -127,4 +152,14 @@ export function addUpToLoop(n: number) {
 
 export function addUpToMath(n: number) {
   return (n * (n + 1)) / 2;
+}
+
+export function arrayOfPairs(n: number) {
+  const result = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      result.push([i, j])
+    }
+  }
+  return result;
 }

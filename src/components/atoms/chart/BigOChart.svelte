@@ -33,6 +33,7 @@
 			// Set back to the initial data
 			chart.data.datasets[0].data = [];
 			chart.data.datasets[1].data = [];
+			chart.data.datasets[2].data = [];
 			chart.data.labels = [...Array(10).keys()];
 			chart.update();
 
@@ -52,6 +53,10 @@
 
 			case BIGO_TITLE.ADD_UP_TO_MATH:
 				chart.data.datasets[1].data = current.y;
+				break;
+
+			case BIGO_TITLE.ARRAY_OF_PAIRS:
+				chart.data.datasets[2].data = current.y;
 				break;
 
 			default:

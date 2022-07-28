@@ -128,6 +128,17 @@
 			<div class="h-3 w-3 bg-red-500" />
 			AddUpTo (Math)</button
 		>
+
+		<!-- Third algorithm -->
+		<button
+			on:click={() => changeActiveAlgo(BIGO_TITLE.ARRAY_OF_PAIRS)}
+			class="btn flex gap-2 {activeTitle === BIGO_TITLE.ARRAY_OF_PAIRS
+				? 'btn-primary'
+				: undefined}"
+		>
+			<div class="h-3 w-3 bg-purple-500" />
+			Array of Pairs</button
+		>
 	</div>
 
 	<!-- Divider horizontal -->
