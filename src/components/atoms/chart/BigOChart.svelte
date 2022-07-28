@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { bigOInitialData, bigOOptions, BIGO_TITLE } from '../../../data/bigOData';
 	import Chart from 'chart.js/auto';
-	import { bigOInitialData, bigOOptions } from '../../../data/bigOData';
 
 	// Input of the data from the parent
-	export let xData: number[] = [];
-	export let yData: number[] = [];
+	export let data: { title: string; x: number[]; y: number[] }[] = [];
+	export let activeTitle: string;
 
 	// Canvas reference to initialize chart.js
 	let canvasRef: HTMLCanvasElement;
@@ -25,9 +25,47 @@
 	});
 
 	$: if (chart) {
+		// If there is no data involved,
+		// that means two things, first,
+		// component still mounting. Second,
+		// User reset the datasets.
+		if (!data.length) {
+			// Set back to the initial data
+			chart.data.datasets[0].data = [];
+			chart.data.datasets[1].data = [];
+			chart.data.labels = [...Array(10).keys()];
+			chart.update();
+
+			// break the reactive-block
+			break $;
+		}
+
+		// Find current active algorithm
+		const current = data.find((v) => v.title === activeTitle);
+		if (!current) break $;
+
 		// Whenever input changes, the chart should react (updating data)
-		chart.data.datasets[0].data = yData.length > 0 ? yData : []; // update the y data
-		chart.data.labels = xData.length > 0 ? xData : [...Array(10).keys()]; // update x data
+		switch (activeTitle) {
+			case BIGO_TITLE.ADD_UP_TO_LOOP:
+				chart.data.datasets[0].data = current.y;
+				break;
+
+			case BIGO_TITLE.ADD_UP_TO_MATH:
+				chart.data.datasets[1].data = current.y;
+				break;
+
+			default:
+				break;
+		}
+
+		// Get all X inside the array
+		const xs = data.map((v) => v.x);
+		// Merge the array into one
+		const merged = Array.prototype.concat.apply([], [...xs]);
+		// Remove duplication and sorted
+		const uniqX = [...new Set(merged)].sort((a, b) => a - b);
+
+		chart.data.labels = uniqX; // update x data
 		chart.update(); // render the new data
 	}
 </script>

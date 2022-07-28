@@ -9,9 +9,17 @@ import type { ChartData, ChartOptions } from 'chart.js';
 export const bigOInitialData: ChartData = {
   datasets: [
     {
-      label: 'Function Time Scale',
+      label: '',
       data: [],
       borderColor: 'yellow',
+      pointBackgroundColor: '#fff',
+      pointBorderColor: '#fff',
+      borderWidth: 2,
+    },
+    {
+      label: '',
+      data: [],
+      borderColor: 'red',
       pointBackgroundColor: '#fff',
       pointBorderColor: '#fff',
       borderWidth: 2,

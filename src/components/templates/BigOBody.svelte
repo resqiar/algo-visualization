@@ -32,8 +32,7 @@
 
 	// these data is populated after
 	// the corresponding function run
-	let xData: number[] = [];
-	let yData: number[] = [];
+	let data: { title: string; x: number[]; y: number[] }[] = [];
 
 	async function calculate() {
 		// if state currently loading
@@ -54,10 +53,10 @@
 			inputValue: inputValue,
 		});
 
-		worker.onmessage = function (event: MessageEvent<number>) {
+		worker.onmessage = function (event: MessageEvent<{ time: number; title: string }>) {
 			// update data according to the result
 			// of the background thread.
-			updateData(inputValue, event.data);
+			updateData(inputValue, event.data.time, event.data.title);
 
 			// reset loading
 			loading = false;
@@ -69,18 +68,26 @@
 	// make the array reactive by just using Array.push()
 	// we need to assign them to make them react to changes.
 	// @see https://svelte.dev/tutorial/updating-arrays-and-objects
-	function updateData(x: number, y: number) {
-		xData = [...xData, x];
-		yData = [...yData, y];
+	function updateData(x: number, y: number, activeTitle: string): void {
+		const i = data.findIndex((v) => v.title === activeTitle);
+		const newValue = { title: activeTitle, x: [x], y: [y] };
+
+		if (i === -1) {
+			data = [...data, newValue];
+			return;
+		}
+
+		data[i].x = [...data[i].x, x];
+		data[i].y = [...data[i].y, y];
+		data = data;
 	}
 
 	// Whenever user change the algorithm type,
 	// reset the x & y to a brand new fresh data.
-	$: if (activeTitle) resetAbort();
+	// $: if (activeTitle) resetAbort();
 
 	function resetAbort() {
-		xData = [];
-		yData = [];
+		data = [];
 
 		// reset loading
 		loading = false;
@@ -103,15 +110,23 @@
 		<!-- First algorithm -->
 		<button
 			on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_LOOP)}
-			class="btn {activeTitle === BIGO_TITLE.ADD_UP_TO_LOOP ? 'btn-primary' : undefined}"
-			>AddUpTo (Loop)</button
+			class="btn flex gap-2 {activeTitle === BIGO_TITLE.ADD_UP_TO_LOOP
+				? 'btn-primary'
+				: undefined}"
+		>
+			<div class="h-3 w-3 bg-yellow-500" />
+			AddUpTo (Loop)</button
 		>
 
 		<!-- Second algorithm -->
 		<button
 			on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_MATH)}
-			class="btn {activeTitle === BIGO_TITLE.ADD_UP_TO_MATH ? 'btn-primary' : undefined}"
-			>AddUpTo (Math)</button
+			class="btn flex gap-2 {activeTitle === BIGO_TITLE.ADD_UP_TO_MATH
+				? 'btn-primary'
+				: undefined}"
+		>
+			<div class="h-3 w-3 bg-red-500" />
+			AddUpTo (Math)</button
 		>
 	</div>
 
@@ -137,7 +152,7 @@
 		{/if}
 
 		<!-- Reset / aborting process button -->
-		{#if xData.length || yData.length || loading}
+		{#if data.length || loading}
 			<button on:click={resetAbort} class="group btn btn-ghost flex gap-2 px-4 normal-case">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -170,6 +185,6 @@
 
 	<!-- CHART -->
 	<div class="flex-1">
-		<BigOChart {xData} {yData} />
+		<BigOChart {data} {activeTitle} />
 	</div>
 </section>

@@ -28,7 +28,10 @@ onmessage = (props: MessageEvent<Props>) => {
 
   // Time taken in millisecond
   const timeTaken = (endPoint - startPoint);
-  postMessage(timeTaken);
+  postMessage({
+    time: timeTaken,
+    title: props.data.activeTitle
+  });
 
   // reset time to default
   startPoint = 0;
