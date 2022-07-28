@@ -115,7 +115,7 @@
 				: undefined}"
 		>
 			<div class="h-3 w-3 bg-yellow-500" />
-			AddUpTo (Loop)</button
+			AddUpTo - O(n)</button
 		>
 
 		<!-- Second algorithm -->
@@ -126,7 +126,7 @@
 				: undefined}"
 		>
 			<div class="h-3 w-3 bg-red-500" />
-			AddUpTo (Math)</button
+			AddUpTo - O(1)</button
 		>
 
 		<!-- Third algorithm -->
@@ -137,7 +137,7 @@
 				: undefined}"
 		>
 			<div class="h-3 w-3 bg-purple-500" />
-			Array of Pairs</button
+			Array of Pairs - O(n^2)</button
 		>
 	</div>
 
