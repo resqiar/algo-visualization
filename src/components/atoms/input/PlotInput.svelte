@@ -10,14 +10,14 @@
 		id="plot-input"
 		{placeholder}
 		class="input input-bordered w-full max-w-xs"
-		bind:value="{inputValue}"
+		bind:value={inputValue}
 		on:keyup
 	/>
 
-  <!-- Label Input -->
-  {#if label}
-    <label class="label" for="plot-input">
-      <span class="label-text-alt">{label}</span>
-    </label>
-  {/if}
+	<!-- Label Input -->
+	{#if label}
+		<label class="label" for="plot-input">
+			<span class="label-text-alt">{label}</span>
+		</label>
+	{/if}
 </div>

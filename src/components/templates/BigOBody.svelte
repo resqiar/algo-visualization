@@ -76,7 +76,9 @@
 
 	// Whenever user change the algorithm type,
 	// reset the x & y to a brand new fresh data.
-	$: if (activeTitle) {
+	$: if (activeTitle) resetAbort();
+
+	function resetAbort() {
 		xData = [];
 		yData = [];
 
@@ -132,6 +134,28 @@
 		<!-- Spinner -->
 		{#if loading}
 			<Spinner />
+		{/if}
+
+		<!-- Reset / aborting process button -->
+		{#if xData.length || yData.length || loading}
+			<button on:click={resetAbort} class="group btn btn-ghost flex gap-2 px-4 normal-case">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-4 w-4 group-hover:animate-spin"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+					/>
+				</svg>
+
+				<p>Reset/Abort</p>
+			</button>
 		{/if}
 	</div>
 </section>
