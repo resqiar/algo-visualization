@@ -137,8 +137,10 @@
 				: undefined}"
 		>
 			<div class="h-3 w-3 bg-purple-500" />
-			Array of Pairs - O(n^2)</button
-		>
+			<p>
+				Array of Pairs - O(n<sup>2</sup>)
+			</p>
+		</button>
 	</div>
 
 	<!-- Divider horizontal -->
