@@ -68,6 +68,11 @@
 				break;
 		}
 
+		// algo1 = [[0.1, 10], [0.2, 100], [0.3, 1000]]
+		// algo2 = [[0.9, 10], [0.9, 100], [1, 1000]]
+		// algo3 = [[9, 10], [10, 100], [100, 1000]]
+		// result = [[[0.1, 0.9, 9], 10], [[0.2, 0.9, 10], 100]]
+
 		// Get all X inside the array
 		const xs = data.map((v) => v.x);
 		// Merge the array into one

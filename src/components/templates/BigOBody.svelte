@@ -86,14 +86,17 @@
 	// reset the x & y to a brand new fresh data.
 	// $: if (activeTitle) resetAbort();
 
-	function resetAbort() {
-		data = [];
-
+	function abort() {
 		// reset loading
 		loading = false;
 
 		// stop background process
 		terminateWorker();
+	}
+
+	function reset() {
+		data = [];
+		abort();
 	}
 
 	// Destroy background worker when component unmounted.
@@ -105,8 +108,8 @@
 	{@html atomOneDark}
 </svelte:head>
 
-<section class="flex w-full items-start justify-center py-8">
-	<div class="flex w-full justify-end gap-4">
+<section class="flex w-full items-start justify-start py-8 pl-12">
+	<div class="flex justify-center gap-4">
 		<!-- First algorithm -->
 		<button
 			on:click={() => changeActiveAlgo(BIGO_TITLE.ADD_UP_TO_LOOP)}
@@ -157,7 +160,7 @@
 	<!-- Divider horizontal -->
 	<div class="divider divider-horizontal" />
 
-	<div class="flex w-full items-center gap-4">
+	<div class="flex items-center gap-4">
 		<!-- Plot N Input -->
 		<PlotInput
 			placeholder="input desired 'n' and press Enter"
@@ -174,30 +177,57 @@
 		{#if loading}
 			<Spinner />
 		{/if}
-
-		<!-- Reset / aborting process button -->
-		{#if data.length || loading}
-			<button on:click={resetAbort} class="group btn btn-ghost flex gap-2 px-4 normal-case">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-4 w-4 group-hover:animate-spin"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					stroke-width="2"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-					/>
-				</svg>
-
-				<p>Reset/Abort</p>
-			</button>
-		{/if}
 	</div>
 </section>
+
+<div class="min-h-8 flex gap-2 px-12">
+	{#if loading}
+		<button
+			on:click={abort}
+			class="group btn btn-error btn-ghost btn-sm flex gap-2 px-4 normal-case"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-4 w-4 group-hover:animate-ping"
+				viewBox="0 0 20 20"
+				fill="currentColor"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z"
+					clip-rule="evenodd"
+				/>
+			</svg>
+
+			<p>Abort Process</p>
+		</button>
+	{/if}
+
+	<!-- Reset data button -->
+	{#if data.length}
+		<button
+			on:click={reset}
+			class="group btn btn-error btn-ghost btn-sm flex gap-2 px-4 normal-case"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-4 w-4 group-hover:animate-spin"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				stroke-width="2"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+				/>
+			</svg>
+
+			<p>Reset Data</p>
+		</button>
+	{/if}
+</div>
 
 <section class="my-8 mx-10 flex justify-between gap-8">
 	<!-- CODE HIGHLIGHTING -->
