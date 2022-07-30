@@ -141,6 +141,17 @@
 				Array of Pairs - O(n<sup>2</sup>)
 			</p>
 		</button>
+
+		<!-- Fourth algorithm -->
+		<button
+			on:click={() => changeActiveAlgo(BIGO_TITLE.FACTORIAL)}
+			class="btn flex gap-2 {activeTitle === BIGO_TITLE.FACTORIAL
+				? 'btn-primary'
+				: undefined}"
+		>
+			<div class="h-3 w-3 bg-orange-500" />
+			<p>Factorial - O(n!)</p>
+		</button>
 	</div>
 
 	<!-- Divider horizontal -->

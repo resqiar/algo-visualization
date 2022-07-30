@@ -1,4 +1,4 @@
-import { addUpToLoop, addUpToMath, arrayOfPairs, BIGO_TITLE } from "../data/bigOData"
+import { addUpToLoop, addUpToMath, arrayOfPairs, BIGO_TITLE, factorial } from "../data/bigOData"
 
 interface Props {
   activeTitle: BIGO_TITLE;
@@ -25,6 +25,12 @@ onmessage = (props: MessageEvent<Props>) => {
     case BIGO_TITLE.ARRAY_OF_PAIRS:
       startPoint = performance.now();
       arrayOfPairs(props.data.inputValue);
+      endPoint = performance.now();
+      break;
+
+    case BIGO_TITLE.FACTORIAL:
+      startPoint = performance.now();
+      factorial(props.data.inputValue);
       endPoint = performance.now();
       break;
 

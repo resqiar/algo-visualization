@@ -34,6 +34,7 @@
 			chart.data.datasets[0].data = [];
 			chart.data.datasets[1].data = [];
 			chart.data.datasets[2].data = [];
+			chart.data.datasets[3].data = [];
 			chart.data.labels = [...Array(10).keys()];
 			chart.update();
 
@@ -57,6 +58,10 @@
 
 			case BIGO_TITLE.ARRAY_OF_PAIRS:
 				chart.data.datasets[2].data = current.y;
+				break;
+
+			case BIGO_TITLE.FACTORIAL:
+				chart.data.datasets[3].data = current.y;
 				break;
 
 			default:

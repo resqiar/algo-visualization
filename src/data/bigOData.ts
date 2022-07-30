@@ -32,6 +32,14 @@ export const bigOInitialData: ChartData = {
       pointBorderColor: '#fff',
       borderWidth: 2,
     },
+    {
+      label: '',
+      data: [],
+      borderColor: 'orange',
+      pointBackgroundColor: '#fff',
+      pointBorderColor: '#fff',
+      borderWidth: 2,
+    },
   ],
 };
 
@@ -93,6 +101,7 @@ export enum BIGO_TITLE {
   ADD_UP_TO_LOOP = 'add-up-to-loop',
   ADD_UP_TO_MATH = 'add-up-to-math',
   ARRAY_OF_PAIRS = 'array-of-pairs',
+  FACTORIAL = 'factorial',
 }
 
 export const bigOMockupFunction: IMockupFunctionData<BIGO_TITLE>[] = [
@@ -134,6 +143,22 @@ export const bigOMockupFunction: IMockupFunctionData<BIGO_TITLE>[] = [
   `,
     title: BIGO_TITLE.ARRAY_OF_PAIRS,
   },
+  {
+    code: `
+      function factorial(n: number) {
+        if (n === 0) return 1;
+
+        let result = n;
+
+        for (let i = 0; i < n; i++) {
+          result = n * factorial(i);
+        }
+
+        return result;
+      }
+    `,
+    title: BIGO_TITLE.FACTORIAL
+  }
 ];
 
 // =================================================================================== //
@@ -161,5 +186,17 @@ export function arrayOfPairs(n: number) {
       result.push([i, j])
     }
   }
+  return result;
+}
+
+export function factorial(n: number) {
+  if (n === 0) return 1;
+
+  let result = n;
+
+  for (let i = 0; i < n; i++) {
+    result = n * factorial(i);
+  }
+
   return result;
 }
