@@ -36,8 +36,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"chart.js": "^3.8.2",
+		"chart.js": "3.8.2",
 		"daisyui": "2.19.1",
-		"theme-change": "^2.1.0"
+		"theme-change": "2.1.0"
 	}
 }
