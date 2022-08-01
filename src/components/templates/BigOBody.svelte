@@ -8,6 +8,7 @@
 	import BigOChart from '../atoms/chart/BigOChart.svelte';
 	import Spinner from '../atoms/utils/Spinner.svelte';
 	import BigOAlgoList from '../organisms/bigO/BigOAlgoList.svelte';
+	import BigOSummary from '../organisms/summaries/BigOSummary.svelte';
 
 	// The title of the choosen algorithm
 	// this variable has a responsibility
@@ -197,4 +198,9 @@
 	<div class="flex-1">
 		<BigOChart {data} {activeTitle} />
 	</div>
+</section>
+
+<!-- Summary section -->
+<section class="mx-10 my-4">
+	<BigOSummary />
 </section>
