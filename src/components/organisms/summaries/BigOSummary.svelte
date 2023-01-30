@@ -40,7 +40,11 @@
 					proportional to the logarithm of the size of the input. This type of Big O
 					commonly used in a divide-and-conquer algorithm like binary search.
 					<sup class="px-1 hover:underline">
-						<a target="_blank" href="https://stackoverflow.com/a/2307332">Read More</a>
+						<a
+							target="_blank"
+							rel="noreferrer noopener"
+							href="https://stackoverflow.com/a/2307332">Read More</a
+						>
 					</sup>
 				</p>
 			</div>
@@ -64,6 +68,7 @@
 					<sup class="px-1 hover:underline">
 						<a
 							target="_blank"
+							rel="noreferrer noopener"
 							href="https://levelup.gitconnected.com/differentiating-logarithmic-and-linearithmic-time-complexity-976cd49c351b"
 							>Read More</a
 						>

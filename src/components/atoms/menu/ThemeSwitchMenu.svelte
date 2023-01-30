@@ -3,7 +3,7 @@
 </script>
 
 <div class="dropdown-end dropdown">
-	<label tabindex="0" class="btn btn-ghost m-1 flex gap-1" for="theme-change-menu">
+	<label tabindex="-1" class="btn-ghost btn m-1 flex gap-1" for="theme-change-menu">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			class="h-5 w-5"
