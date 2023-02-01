@@ -1,42 +1,55 @@
 <script lang="ts">
-	const sum = 25;
-	let cells: boolean[][] = [];
+	export let columns = 20;
+	export let rows = 20;
 
-	for (let i = 0; i < sum; i++) {
-		cells[i] = [];
-		for (let j = 0; j < sum; j++) {
-			cells[i][j] = false;
+	let grid: number[][] = [];
+
+	const start = [10, 10];
+	const end = [19, 19];
+
+	for (let i = 0; i < rows; i++) {
+		grid[i] = [];
+		for (let j = 0; j < columns; j++) {
+			grid[i][j] = 0;
 		}
 	}
 
-	function toggleCell(i: number, j: number) {
-		cells[i][j] = !cells[i][j];
+	function handleCellClick(colIdx: number, rowIdx: number) {
+		if (colIdx === start[0] && rowIdx === start[1]) return;
+		grid[colIdx][rowIdx] = 1;
 	}
 </script>
 
-<div class="mt-8 flex items-center justify-center">
-	<table>
-		{#each cells as row, i}
-			<tr>
-				{#each row as cell, j}
-					<td class:active={cell} on:click={() => toggleCell(i, j)} />
+<div class="my-6 flex items-center justify-center">
+	<div class="flex items-center">
+		<p class="vertical-text">Columns (X)</p>
+
+		<div class="flex flex-col items-center">
+			<p>Rows (Y)</p>
+			<table class="table-auto">
+				{#each grid as col, colIdx}
+					<tr>
+						{#each col as row, rowIdx}
+							<td
+								class={`max-h-[50px] max-w-[50px] cursor-pointer border border-gray-500 p-2 text-sm 
+              ${row ? 'bg-red-500' : ''}
+              ${colIdx === start[0] && rowIdx === start[1] ? 'bg-amber-600' : ''}
+              ${colIdx === end[0] && rowIdx === end[1] ? 'bg-purple-600' : ''}
+            `}
+								on:keydown={() => handleCellClick(colIdx, rowIdx)}
+								on:click={() => handleCellClick(colIdx, rowIdx)}
+								>{colIdx},{rowIdx}</td
+							>
+						{/each}
+					</tr>
 				{/each}
-			</tr>
-		{/each}
-	</table>
+			</table>
+		</div>
+	</div>
 </div>
 
 <style>
-	table {
-		width: 90%;
-		border-collapse: collapse;
-		table-layout: fixed;
-	}
-	td {
-		height: 20px;
-		border: 1px solid black;
-	}
-	td.active {
-		background-color: red;
+	.vertical-text {
+		writing-mode: sideways-lr;
 	}
 </style>
