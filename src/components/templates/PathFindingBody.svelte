@@ -1,13 +1,55 @@
 <script lang="ts">
 	import { PriorityQueue, type Edge } from '../../libs/priorityQueue';
 
-	let columns = 70;
-	let rows = 150;
+	/**
+	 * States to maintain the graphical interface
+	 * of the Graph using 2D matrix array. It consist
+	 * of columns (Y) and rows (X).
+	 **/
+	let gridSize: 'tiny' | 'small' | 'medium' | 'big' | 'huge' = 'tiny';
+	let columns = 50;
+	let rows = 50;
 
+	// States to keep track of setting start and end vertex
+	let settingStart = false;
+	let settingEnd = false;
+	let isResume = false;
+
+	// States to keep the coordinate (Y, X)
+	let start: number[] = [];
+	let end: number[] = [];
+
+	/**
+	 * ReturnType<typeof setTimeout> is a type that represents
+	 * the return type of the setTimeout function, which is a number
+	 * representing the ID value of the timer set. This ID will be used
+	 * to clearTimeout all the process when doing reset.
+	 **/
+	let pathTimeout: ReturnType<typeof setTimeout>[] = [];
+	let visitedTimeout: ReturnType<typeof setTimeout>[] = [];
+
+	// States to store the matrix edges
 	let grid: Edge[][] = [];
 
 	// Initialize Grid
 	initGrid();
+
+	$: {
+		if (gridSize === 'tiny') {
+			(columns = 10), (rows = 10);
+		} else if (gridSize === 'small') {
+			(columns = 30), (rows = 30);
+		} else if (gridSize === 'medium') {
+			(columns = 40), (rows = 60);
+		} else if (gridSize === 'big') {
+			(columns = 50), (rows = 100);
+		} else if (gridSize === 'huge') {
+			(columns = 70), (rows = 150);
+		}
+
+		// reset grid
+		reset();
+	}
 
 	function initGrid() {
 		for (let y = 0; y < columns; y++) {
@@ -27,14 +69,13 @@
 		}
 	}
 
-	let settingStart = false;
-	let settingEnd = false;
-
-	let start: number[] = [];
-	let end: number[] = [];
-
 	function handleCellClick(colIdx: number, rowIdx: number) {
+		/**
+		 * If user click the cell with the settingStart == true,
+		 * Then set the clicked cell to be the start point.
+		 **/
 		if (settingStart) {
+			// reset previous start point (if any)
 			if (start.length) {
 				const temp = grid[start[0]][start[1]];
 				temp.isStart = false;
@@ -47,7 +88,12 @@
 			return;
 		}
 
+		/**
+		 * If user click the cell with the settingEnd == true,
+		 * Then set the clicked cell to be the end point.
+		 **/
 		if (settingEnd) {
+			// reset previous end point (if any)
 			if (end.length) {
 				const temp = grid[end[0]][end[1]];
 				temp.isEnd = false;
@@ -60,6 +106,11 @@
 			return;
 		}
 
+		/**
+		 * Otherwise, set the clicked cell to be a wall/obstacle.
+		 * This wall will block the algorithm so that it has to find,
+		 * another way around.
+		 **/
 		if (grid[colIdx][rowIdx].isStart || grid[colIdx][rowIdx].isEnd) return;
 		grid[colIdx][rowIdx].isWall = !grid[colIdx][rowIdx].isWall;
 	}
@@ -77,20 +128,23 @@
 		}
 	}
 
-	let pathTimeout: ReturnType<typeof setTimeout>[] = [];
-	let visitedTimeout: ReturnType<typeof setTimeout>[] = [];
-
 	function reset() {
+		// Clear all process for visited vertices
 		for (let i = 0; i < visitedTimeout.length; i++) {
 			clearTimeout(visitedTimeout[i]);
 		}
 
+		// Clear all process for path vertices
 		for (let i = 0; i < pathTimeout.length; i++) {
 			clearTimeout(pathTimeout[i]);
 		}
 
+		grid = [];
+		start = [];
+		end = [];
 		visitedTimeout = [];
 		pathTimeout = [];
+		isResume = false;
 
 		initGrid();
 	}
@@ -99,6 +153,21 @@
 		const pq = new PriorityQueue();
 		const distance: { [vtx: string]: number } = {};
 		const from: { [vtx: string]: Edge | null } = {};
+
+		/**
+		 * If the algorithm has already fired,
+		 * that means the grid already present a result,
+		 * reset all the isVisited value inside all the edges to false.
+		 * reset all the isPath value inside all the edges to false.
+		 */
+		if (isResume) {
+			for (let y = 0; y < columns; y++) {
+				for (let x = 0; x < rows; x++) {
+					grid[y][x].isVisited = false;
+					grid[y][x].isPath = false;
+				}
+			}
+		}
 
 		// Initialize data
 		for (let y = 0; y < columns; y++) {
@@ -113,6 +182,9 @@
 				from[`${x},${y}`] = null;
 			}
 		}
+
+		// set isResume to true, since the algo already in process.
+		isResume = true;
 
 		while (pq.heap.length) {
 			const dequeued = pq.dequeue();
@@ -141,11 +213,13 @@
 				for (let i = result.length - 1; i > 0; i--) {
 					if (!result[i]) continue;
 
-					// set grid to result path
+					// set grid to result path.
+					// save the setTimeout id for later usage if user want to reset.
 					const id: ReturnType<typeof setTimeout> = setTimeout(() => {
 						grid[result[i][0]][result[i][1]].isPath = true;
 					}, 50);
 
+					// push the timeout id to pathTimeout
 					pathTimeout = [...pathTimeout, id];
 				}
 
@@ -153,12 +227,17 @@
 			}
 
 			const temp = grid[dequeued.vtx.y][dequeued.vtx.x];
+
+			// If current dequeued cell is a wall, just continue the iteration.
 			if (temp.isWall) continue;
 
+			// set current dequeued cell to visited.
+			// save the setTimeout id for later usage if user want to reset.
 			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
 				grid[dequeued.vtx.y][dequeued.vtx.x].isVisited = true;
 			}, 50);
 
+			// push the timeout id to visitedTimeout
 			visitedTimeout = [...visitedTimeout, id];
 
 			const up =
@@ -169,6 +248,11 @@
 			const down =
 				grid[temp.y + 1] && grid[temp.y + 1][temp.x] ? grid[temp.y + 1][temp.x] : null;
 
+			/**
+			 * Look all neighbors of current dequeued cell,
+			 * if the neighbors either up, right, left, or down does not exist,
+			 * remove from the array.
+			 **/
 			const neighbors: Edge[] = [up, right, left, down].filter((v) => v !== null) as Edge[];
 
 			// ...calculate the new distance of each vertex.
@@ -193,26 +277,59 @@
 	}
 </script>
 
-<div class="flex gap-2 px-[7%]">
-	<button class="btn-outline btn px-8" on:click={() => (settingStart = true)}>Start</button>
-	<button class="btn-outline btn px-8" on:click={() => (settingEnd = true)}>End</button>
+<div class="flex gap-4 px-8">
+	<!-- SET GRID SIZE SELECTOR -->
+	<div class="px-2">
+		<div class="form-control w-full max-w-xs">
+			<select bind:value={gridSize} class="select-bordered select">
+				<option disabled>Grid Size</option>
+				<option selected value="tiny">Tiny 10x10</option>
+				<option selected value="small">Small 30x30</option>
+				<option value="medium">Medium 40x60</option>
+				<option value="big">Big 50x100</option>
+				<option value="huge">Huge 70x150</option>
+			</select>
+		</div>
+	</div>
+	<!-- SET START BUTTON -->
+	<button
+		class={`btn-outline btn px-8 ${settingStart ? 'bg-yellow-500 text-black' : ''}`}
+		on:click={() => {
+			settingStart = true;
+			settingEnd = false;
+		}}>Start</button
+	>
+	<!-- SET END BUTTON -->
+	<button
+		class={`btn-outline btn px-8 ${settingEnd ? 'bg-red-800' : ''}`}
+		on:click={() => {
+			settingStart = false;
+			settingEnd = true;
+		}}>End</button
+	>
 	<button class="btn-outline btn px-8" on:click={randomizeWall}>Random Obstacle</button>
+
+	<!-- DIVIDER -->
+	<div class="divider divider-horizontal" />
+
 	<button class="btn px-8" on:click={startAlgo}>Play</button>
 	<button class="btn btn-error px-8" on:click={reset}>Reset</button>
 </div>
-<div class="my-6 flex items-center justify-center">
-	<div class="flex items-center">
+
+<!-- GRID REPRESENTATION -->
+<div class="flex h-screen w-full items-center justify-center py-6 px-8">
+	<div class="flex h-full w-full items-center">
 		<p class="vertical-text">Columns (Y)</p>
 
-		<div class="flex flex-col items-center">
+		<div class="flex h-full w-full flex-col items-center">
 			<p>Rows (X)</p>
-			<table class="w-full table-auto border-collapse">
+			<table class="h-full w-full table-auto border-collapse">
 				{#each grid as col, colIdx}
 					<tr>
 						{#each col as row, rowIdx}
 							<td
 								class={`
-              max-h-[20px] max-w-[20px] cursor-pointer border border-gray-700 p-1 text-[6px] font-bold
+              cursor-pointer border border-gray-700 p-1 text-[6px] font-bold
               ${row.isWall ? 'bg-black' : ''}
               ${row.isStart ? 'bg-yellow-300' : ''}
               ${row.isEnd ? 'bg-red-500' : ''}
