@@ -1,24 +1,29 @@
 <script lang="ts">
 	import { PriorityQueue, type Edge } from '../../libs/priorityQueue';
 
-	export let columns = 70;
-	export let rows = 150;
+	let columns = 70;
+	let rows = 150;
 
 	let grid: Edge[][] = [];
 
-	for (let y = 0; y < columns; y++) {
-		grid[y] = [];
-		for (let x = 0; x < rows; x++) {
-			grid[y][x] = {
-				x: x,
-				y: y,
-				isWall: false,
-				isStart: false,
-				isVisited: false,
-				isEnd: false,
-				isPath: false,
-				weight: 1,
-			};
+	// Initialize Grid
+	initGrid();
+
+	function initGrid() {
+		for (let y = 0; y < columns; y++) {
+			grid[y] = [];
+			for (let x = 0; x < rows; x++) {
+				grid[y][x] = {
+					x: x,
+					y: y,
+					isWall: false,
+					isStart: false,
+					isVisited: false,
+					isEnd: false,
+					isPath: false,
+					weight: 1,
+				};
+			}
 		}
 	}
 
@@ -72,6 +77,24 @@
 		}
 	}
 
+	let pathTimeout: ReturnType<typeof setTimeout>[] = [];
+	let visitedTimeout: ReturnType<typeof setTimeout>[] = [];
+
+	function reset() {
+		for (let i = 0; i < visitedTimeout.length; i++) {
+			clearTimeout(visitedTimeout[i]);
+		}
+
+		for (let i = 0; i < pathTimeout.length; i++) {
+			clearTimeout(pathTimeout[i]);
+		}
+
+		visitedTimeout = [];
+		pathTimeout = [];
+
+		initGrid();
+	}
+
 	function startAlgo() {
 		const pq = new PriorityQueue();
 		const distance: { [vtx: string]: number } = {};
@@ -111,23 +134,32 @@
 					const current = from[`${temp.y},${temp.x}`];
 					if (!current) break;
 
-					// set grid to result path
-					setTimeout(() => {
-						grid[current.y][current.x].isPath = true;
-					}, 100);
-
 					result.push([current.y, current.x]);
 					temp = current;
 				}
+
+				for (let i = result.length - 1; i > 0; i--) {
+					if (!result[i]) continue;
+
+					// set grid to result path
+					const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+						grid[result[i][0]][result[i][1]].isPath = true;
+					}, 50);
+
+					pathTimeout = [...pathTimeout, id];
+				}
+
 				return;
 			}
 
 			const temp = grid[dequeued.vtx.y][dequeued.vtx.x];
 			if (temp.isWall) continue;
 
-			setTimeout(() => {
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
 				grid[dequeued.vtx.y][dequeued.vtx.x].isVisited = true;
-			}, 100);
+			}, 50);
+
+			visitedTimeout = [...visitedTimeout, id];
 
 			const up =
 				grid[temp.y - 1] && grid[temp.y - 1][temp.x] ? grid[temp.y - 1][temp.x] : null;
@@ -166,6 +198,7 @@
 	<button class="btn-outline btn px-8" on:click={() => (settingEnd = true)}>End</button>
 	<button class="btn-outline btn px-8" on:click={randomizeWall}>Random Obstacle</button>
 	<button class="btn px-8" on:click={startAlgo}>Play</button>
+	<button class="btn btn-error px-8" on:click={reset}>Reset</button>
 </div>
 <div class="my-6 flex items-center justify-center">
 	<div class="flex items-center">
@@ -184,7 +217,7 @@
               ${row.isStart ? 'bg-yellow-300' : ''}
               ${row.isEnd ? 'bg-red-500' : ''}
               ${row.isVisited && !row.isStart && !row.isEnd ? 'bg-gray-600' : ''}
-              ${row.isPath && !row.isStart && !row.isEnd ? 'animate-ping !bg-blue-500' : ''}
+              ${row.isPath && !row.isStart && !row.isEnd ? '!bg-blue-500' : ''}
             `}
 								on:keydown={() => handleCellClick(colIdx, rowIdx)}
 								on:click={() => handleCellClick(colIdx, rowIdx)}
