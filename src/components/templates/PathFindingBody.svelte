@@ -128,6 +128,21 @@
 		}
 	}
 
+	/**
+	 * If the algorithm has already fired,
+	 * that means the grid already present a result,
+	 * reset all the isVisited value inside all the edges to false.
+	 * reset all the isPath value inside all the edges to false.
+	 */
+	function clearResult() {
+		for (let y = 0; y < columns; y++) {
+			for (let x = 0; x < rows; x++) {
+				grid[y][x].isVisited = false;
+				grid[y][x].isPath = false;
+			}
+		}
+	}
+
 	function reset() {
 		// Clear all process for visited vertices
 		for (let i = 0; i < visitedTimeout.length; i++) {
@@ -156,18 +171,10 @@
 
 		/**
 		 * If the algorithm has already fired,
-		 * that means the grid already present a result,
-		 * reset all the isVisited value inside all the edges to false.
-		 * reset all the isPath value inside all the edges to false.
+		 * reset all the isVisited and isPath inside all
+		 * the edges to false.
 		 */
-		if (isResume) {
-			for (let y = 0; y < columns; y++) {
-				for (let x = 0; x < rows; x++) {
-					grid[y][x].isVisited = false;
-					grid[y][x].isPath = false;
-				}
-			}
-		}
+		if (isResume) clearResult();
 
 		// Initialize data
 		for (let y = 0; y < columns; y++) {
@@ -313,6 +320,7 @@
 	<div class="divider divider-horizontal" />
 
 	<button class="btn px-8" on:click={startAlgo}>Play</button>
+	<button class="btn btn-error px-8" on:click={clearResult}>Clear</button>
 	<button class="btn btn-error px-8" on:click={reset}>Reset</button>
 </div>
 
