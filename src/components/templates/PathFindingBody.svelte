@@ -128,6 +128,32 @@
 		}
 	}
 
+	function save() {
+		// Save grid and its size to localStorage.
+		const savedGrid = {
+			size: gridSize,
+			grid: grid,
+		};
+		localStorage.setItem('save', JSON.stringify(savedGrid));
+	}
+
+	function load() {
+		const saved: any = localStorage.getItem('save');
+		if (!saved) return;
+
+		const parsed = JSON.parse(saved);
+
+		// change the grid size according to the saved value
+		setTimeout(() => {
+			gridSize = parsed.size;
+		}, 50);
+
+		// change the grid matrix values
+		setTimeout(() => {
+			grid = parsed.grid;
+		}, 50);
+	}
+
 	/**
 	 * If the algorithm has already fired,
 	 * that means the grid already present a result,
@@ -315,6 +341,8 @@
 		}}>End</button
 	>
 	<button class="btn-outline btn px-8" on:click={randomizeWall}>Random Obstacle</button>
+	<button class="btn-outline btn px-8" on:click={save}>Save</button>
+	<button class="btn-outline btn px-8" on:click={load}>Load</button>
 
 	<!-- DIVIDER -->
 	<div class="divider divider-horizontal" />
