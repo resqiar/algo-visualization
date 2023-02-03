@@ -310,7 +310,7 @@
 	}
 </script>
 
-<div class="flex gap-4 px-8 py-8">
+<div class="flex gap-4 overflow-scroll px-8 py-8">
 	<!-- SET GRID SIZE SELECTOR -->
 	<div class="px-2">
 		<div class="form-control w-full max-w-xs">
@@ -501,12 +501,9 @@
 </div>
 
 <!-- GRID REPRESENTATION -->
-<div class="flex h-screen w-full items-center justify-center py-6 px-8">
+<div class="flex h-screen w-full items-center justify-center py-6 px-4">
 	<div class="flex h-full w-full items-center">
-		<p class="vertical-text">Columns (Y)</p>
-
 		<div class="flex h-full w-full flex-col items-center">
-			<p>Rows (X)</p>
 			<table class="h-full w-full table-auto border-collapse">
 				{#each grid as col, colIdx}
 					<tr>
