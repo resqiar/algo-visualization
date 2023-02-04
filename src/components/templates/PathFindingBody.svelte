@@ -126,6 +126,7 @@
 
 	function play() {
 		if (gridAlgo === 'dijkstra') return dijkstra();
+		if (gridAlgo === 'dfs') return dfs(grid[start[0]][start[1]]);
 	}
 
 	function dijkstra() {
@@ -245,6 +246,75 @@
 					pq.enqueue(current, calculated);
 				}
 			}
+		}
+	}
+
+	function dfs(vertex: Edge) {
+		const result: Edge[][] = [];
+		const visited: Set<string> = new Set();
+
+		(function helper(v: Edge, path: Edge[]) {
+			if (!v) return;
+			if ((v.y === end[0] && v.x) === end[1]) {
+				/**
+				 * The purpose of adding the current path to result is
+				 * to keep track of all the paths found, so that later,
+				 * the shortest path can be calculated based on the length.
+				 **/
+				result.push([...path, v]);
+			}
+			if (v.isWall) return;
+
+			// push current vertex to visited
+			visited.add(`${v.y},${v.x}`);
+
+			// set current dequeued cell to visited.
+			// save the setTimeout id for later usage if user want to reset.
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+				grid[v.y][v.x].isVisited = true;
+			}, 100);
+			visitedTimeout.push(id);
+
+			const up = grid[v.y - 1] && grid[v.y - 1][v.x] ? grid[v.y - 1][v.x] : null;
+			const right = grid[v.y] && grid[v.y][v.x + 1] ? grid[v.y][v.x + 1] : null;
+			const left = grid[v.y] && grid[v.y][v.x - 1] ? grid[v.y][v.x - 1] : null;
+			const down = grid[v.y + 1] && grid[v.y + 1][v.x] ? grid[v.y + 1][v.x] : null;
+
+			/**
+			 * look all neighbors of current visited cell,
+			 * if the neighbors either up, right, left, or down does not exist,
+			 * remove from the array.
+			 **/
+			const neighbors: Edge[] = [up, right, left, down].filter((v) => v !== null) as Edge[];
+
+			// ...calculate the new distance of each vertex.
+			// distance of previous dequeued value + current vertex weight
+			for (let i = 0; i < neighbors.length; i++) {
+				const val = grid[neighbors[i].y][neighbors[i].x];
+				// if current node is not visited, otherwise ignore
+				if (!visited.has(`${val.y},${val.x}`)) helper(val, [...path, v]);
+			}
+		})(vertex, []);
+
+		let lastLength = Infinity;
+		let shortestPath: Edge[] = [];
+		/**
+		 * Iterate over all possible paths saved inside the result,
+		 * compare the length of each path from previous saved.
+		 * If current path length is less than previous, update shortestPath and lastLength.
+		 */
+		for (const path of result) {
+			if (path.length < lastLength) {
+				lastLength = path.length;
+				shortestPath = path;
+			}
+		}
+
+		for (let i = 0; i < shortestPath.length; i++) {
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+				grid[shortestPath[i].y][shortestPath[i].x].isPath = true;
+			}, 100);
+			pathTimeout.push(id);
 		}
 	}
 </script>
