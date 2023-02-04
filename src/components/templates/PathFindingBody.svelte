@@ -1,12 +1,17 @@
 <script lang="ts">
+	import { clearResult } from '../../libs/clearResult';
+	import { initGrid } from '../../libs/initGrid';
 	import { PriorityQueue, type Edge } from '../../libs/priorityQueue';
+	import { randomizeWall } from '../../libs/randomizeWall';
+	import { load, save } from '../../libs/saveLoad';
+	import type { Grid } from '../../types/grid';
 
 	/**
 	 * States to maintain the graphical interface
 	 * of the Graph using 2D matrix array. It consist
 	 * of columns (Y) and rows (X).
 	 **/
-	let gridSize: 'tiny' | 'small' | 'medium' | 'big' | 'huge' = 'tiny';
+	let gridSize: Grid['size'] = 'tiny';
 	let columns = 50;
 	let rows = 50;
 
@@ -32,7 +37,7 @@
 	let grid: Edge[][] = [];
 
 	// Initialize Grid
-	initGrid();
+	grid = initGrid(grid, columns, rows);
 
 	$: {
 		if (gridSize === 'tiny') {
@@ -49,24 +54,6 @@
 
 		// reset grid
 		reset();
-	}
-
-	function initGrid() {
-		for (let y = 0; y < columns; y++) {
-			grid[y] = [];
-			for (let x = 0; x < rows; x++) {
-				grid[y][x] = {
-					x: x,
-					y: y,
-					isWall: false,
-					isStart: false,
-					isVisited: false,
-					isEnd: false,
-					isPath: false,
-					weight: 1,
-				};
-			}
-		}
 	}
 
 	function handleCellClick(colIdx: number, rowIdx: number) {
@@ -115,60 +102,6 @@
 		grid[colIdx][rowIdx].isWall = !grid[colIdx][rowIdx].isWall;
 	}
 
-	function randomizeWall() {
-		for (let y = 0; y < columns; y++) {
-			for (let x = 0; x < rows; x++) {
-				if (grid[y][x].isStart || grid[y][x].isEnd) continue;
-				if (Math.random() < 0.3) {
-					grid[y][x].isWall = true;
-				} else {
-					grid[y][x].isWall = false;
-				}
-			}
-		}
-	}
-
-	function save() {
-		// Save grid and its size to localStorage.
-		const savedGrid = {
-			size: gridSize,
-			grid: grid,
-		};
-		localStorage.setItem('save', JSON.stringify(savedGrid));
-	}
-
-	function load() {
-		const saved: any = localStorage.getItem('save');
-		if (!saved) return;
-
-		const parsed = JSON.parse(saved);
-
-		// change the grid size according to the saved value
-		setTimeout(() => {
-			gridSize = parsed.size;
-		}, 50);
-
-		// change the grid matrix values
-		setTimeout(() => {
-			grid = parsed.grid;
-		}, 50);
-	}
-
-	/**
-	 * If the algorithm has already fired,
-	 * that means the grid already present a result,
-	 * reset all the isVisited value inside all the edges to false.
-	 * reset all the isPath value inside all the edges to false.
-	 */
-	function clearResult() {
-		for (let y = 0; y < columns; y++) {
-			for (let x = 0; x < rows; x++) {
-				grid[y][x].isVisited = false;
-				grid[y][x].isPath = false;
-			}
-		}
-	}
-
 	function reset() {
 		// Clear all process for visited vertices
 		for (let i = 0; i < visitedTimeout.length; i++) {
@@ -187,7 +120,7 @@
 		pathTimeout = [];
 		isResume = false;
 
-		initGrid();
+		grid = initGrid(grid, columns, rows);
 	}
 
 	function startAlgo() {
@@ -197,10 +130,11 @@
 
 		/**
 		 * If the algorithm has already fired,
-		 * reset all the isVisited and isPath inside all
-		 * the edges to false.
+		 * that means the grid already present a result,
+		 * reset all the isVisited value inside all the edges to false.
+		 * reset all the isPath value inside all the edges to false.
 		 */
-		if (isResume) clearResult();
+		if (isResume) grid = clearResult(grid, columns, rows);
 
 		// Initialize data
 		for (let y = 0; y < columns; y++) {
@@ -387,7 +321,10 @@
 			</svg>
 			End</button
 		>
-		<button class="btn-outline btn flex gap-2 px-6" on:click={randomizeWall}>
+		<button
+			class="btn-outline btn flex gap-2 px-6"
+			on:click={() => (grid = randomizeWall(grid, columns, rows))}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
@@ -406,7 +343,7 @@
 		>
 
 		<!-- SAVE BUTTON -->
-		<button class="btn-outline btn flex gap-2 px-6" on:click={save}>
+		<button class="btn-outline btn flex gap-2 px-6" on:click={() => save(grid, gridSize)}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
@@ -425,7 +362,22 @@
 		>
 
 		<!-- LOAD BUTTON -->
-		<button class="btn-outline btn flex gap-2 px-6" on:click={load}>
+		<button
+			class="btn-outline btn flex gap-2 px-6"
+			on:click={() => {
+				const parsed = load();
+
+				// change the grid size according to the saved value
+				setTimeout(() => {
+					gridSize = parsed.size;
+				}, 50);
+
+				// change the grid matrix values
+				setTimeout(() => {
+					grid = parsed.grid;
+				}, 50);
+			}}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
@@ -443,9 +395,6 @@
 			Load</button
 		>
 	</div>
-
-	<!-- DIVIDER -->
-	<!-- <div class="divider divider-horizontal" /> -->
 
 	<div class="flex gap-2 px-2">
 		<button class="btn flex gap-2 px-6" on:click={startAlgo}>
@@ -467,7 +416,10 @@
 		>
 
 		<!-- CLEAR RESULT -->
-		<button class="btn btn-error flex gap-2 px-8" on:click={clearResult}>
+		<button
+			class="btn btn-error flex gap-2 px-8"
+			on:click={() => (grid = clearResult(grid, columns, rows))}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
@@ -533,9 +485,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	.vertical-text {
-		writing-mode: sideways-lr;
-	}
-</style>
