@@ -11,6 +11,7 @@
 	 * of the Graph using 2D matrix array. It consist
 	 * of columns (Y) and rows (X).
 	 **/
+	let gridAlgo: Grid['algorithm'] = 'dijkstra';
 	let gridSize: Grid['size'] = 'tiny';
 	let columns = 50;
 	let rows = 50;
@@ -123,7 +124,11 @@
 		grid = initGrid(grid, columns, rows);
 	}
 
-	function startAlgo() {
+	function play() {
+		if (gridAlgo === 'dijkstra') return dijkstra();
+	}
+
+	function dijkstra() {
 		const pq = new PriorityQueue();
 		const distance: { [vtx: string]: number } = {};
 		const from: { [vtx: string]: Edge | null } = {};
@@ -246,6 +251,18 @@
 
 <div class="flex flex-col gap-4 px-8 py-8">
 	<div class="flex gap-4">
+		<!-- SET ALGORITHMS SELECTOR -->
+		<div class="px-2">
+			<div class="form-control w-full max-w-xs">
+				<select bind:value={gridAlgo} class="select-bordered select">
+					<option disabled>Select Algorithms</option>
+					<option value="dijkstra" selected>Dijkstra's Algorithm</option>
+					<option value="dfs">Depth First Search (DFS)</option>
+					<option value="bfs">Breadth First Search (BFS)</option>
+				</select>
+			</div>
+		</div>
+
 		<!-- SET GRID SIZE SELECTOR -->
 		<div class="px-2">
 			<div class="form-control w-full max-w-xs">
@@ -397,7 +414,7 @@
 	</div>
 
 	<div class="flex gap-2 px-2">
-		<button class="btn flex gap-2 px-6" on:click={startAlgo}>
+		<button class="btn flex gap-2 px-6" on:click={play}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
