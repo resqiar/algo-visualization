@@ -7,7 +7,7 @@
 	import IndexHeader from '../components/organisms/headers/IndexHeader.svelte';
 
 	// the id of the active drawer
-	let activeDrawer = 1;
+	let activeDrawer = 0;
 
 	// handle drawer change when user click on different items.
 	function handleDrawerChange(i: number) {
