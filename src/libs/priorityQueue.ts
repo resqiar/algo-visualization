@@ -6,6 +6,7 @@ export interface Edge {
 	isVisited: boolean;
 	isEnd: boolean;
 	isPath: boolean;
+	prev: Edge | null;
 	weight: number;
 }
 

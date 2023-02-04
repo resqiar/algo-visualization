@@ -12,6 +12,7 @@ export function initGrid(grid: Edge[][], columns: number, rows: number): Edge[][
 				isVisited: false,
 				isEnd: false,
 				isPath: false,
+				prev: null,
 				weight: 1,
 			};
 		}

@@ -2,6 +2,7 @@
 	import { clearResult } from '../../libs/clearResult';
 	import { initGrid } from '../../libs/initGrid';
 	import { PriorityQueue, type Edge } from '../../libs/priorityQueue';
+	import { Queue } from '../../libs/queue';
 	import { randomizeWall } from '../../libs/randomizeWall';
 	import { load, save } from '../../libs/saveLoad';
 	import type { Grid } from '../../types/grid';
@@ -127,6 +128,29 @@
 	function play() {
 		if (gridAlgo === 'dijkstra') return dijkstra();
 		if (gridAlgo === 'dfs') return dfs(grid[start[0]][start[1]]);
+		if (gridAlgo === 'bfs') return bfs(grid[start[0]][start[1]]);
+	}
+
+	function getNeighbors(target: Edge) {
+		const up =
+			grid[target.y - 1] && grid[target.y - 1][target.x]
+				? grid[target.y - 1][target.x]
+				: null;
+		const right =
+			grid[target.y] && grid[target.y][target.x + 1] ? grid[target.y][target.x + 1] : null;
+		const left =
+			grid[target.y] && grid[target.y][target.x - 1] ? grid[target.y][target.x - 1] : null;
+		const down =
+			grid[target.y + 1] && grid[target.y + 1][target.x]
+				? grid[target.y + 1][target.x]
+				: null;
+
+		/**
+		 * Look all neighbors of current dequeued cell,
+		 * if the neighbors either up, right, left, or down does not exist,
+		 * remove from the array.
+		 **/
+		return [up, right, left, down].filter((v) => v !== null) as Edge[];
 	}
 
 	function dijkstra() {
@@ -213,20 +237,8 @@
 			// push the timeout id to visitedTimeout
 			visitedTimeout = [...visitedTimeout, id];
 
-			const up =
-				grid[temp.y - 1] && grid[temp.y - 1][temp.x] ? grid[temp.y - 1][temp.x] : null;
-			const right =
-				grid[temp.y] && grid[temp.y][temp.x + 1] ? grid[temp.y][temp.x + 1] : null;
-			const left = grid[temp.y] && grid[temp.y][temp.x - 1] ? grid[temp.y][temp.x - 1] : null;
-			const down =
-				grid[temp.y + 1] && grid[temp.y + 1][temp.x] ? grid[temp.y + 1][temp.x] : null;
-
-			/**
-			 * Look all neighbors of current dequeued cell,
-			 * if the neighbors either up, right, left, or down does not exist,
-			 * remove from the array.
-			 **/
-			const neighbors: Edge[] = [up, right, left, down].filter((v) => v !== null) as Edge[];
+			// get all current dequeued neighbors
+			const neighbors = getNeighbors(temp);
 
 			// ...calculate the new distance of each vertex.
 			// distance of previous dequeued value + current vertex weight
@@ -275,17 +287,8 @@
 			}, 100);
 			visitedTimeout.push(id);
 
-			const up = grid[v.y - 1] && grid[v.y - 1][v.x] ? grid[v.y - 1][v.x] : null;
-			const right = grid[v.y] && grid[v.y][v.x + 1] ? grid[v.y][v.x + 1] : null;
-			const left = grid[v.y] && grid[v.y][v.x - 1] ? grid[v.y][v.x - 1] : null;
-			const down = grid[v.y + 1] && grid[v.y + 1][v.x] ? grid[v.y + 1][v.x] : null;
-
-			/**
-			 * look all neighbors of current visited cell,
-			 * if the neighbors either up, right, left, or down does not exist,
-			 * remove from the array.
-			 **/
-			const neighbors: Edge[] = [up, right, left, down].filter((v) => v !== null) as Edge[];
+			// get all current dequeued neighbors
+			const neighbors = getNeighbors(v);
 
 			// ...calculate the new distance of each vertex.
 			// distance of previous dequeued value + current vertex weight
@@ -313,6 +316,67 @@
 		for (let i = 0; i < shortestPath.length; i++) {
 			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
 				grid[shortestPath[i].y][shortestPath[i].x].isPath = true;
+			}, 100);
+			pathTimeout.push(id);
+		}
+	}
+
+	function bfs(vertex: Edge) {
+		const queue = new Queue();
+		const visited = new Set();
+
+		// enqueue the first vertex (specified root)
+		queue.enqueue(vertex);
+
+		// mark first vertex as visited
+		visited.add(`${vertex.y},${vertex.x}`);
+
+		// loop while queue is not empty
+		while (queue.length) {
+			// dequeue value
+			const dequeued = queue.dequeue();
+
+			if (!dequeued) break;
+			if (dequeued.y === end[0] && dequeued.x === end[1]) break;
+
+			// get all current dequeued neighbors
+			const neighbors = getNeighbors(dequeued);
+
+			for (let i = 0; i < neighbors.length; i++) {
+				const val = grid[neighbors[i].y][neighbors[i].x];
+				if (val.isWall) continue;
+
+				if (!visited.has(`${val.y},${val.x}`)) {
+					// set visited for current iteration value
+					visited.add(`${val.y},${val.x}`);
+					val.prev = dequeued;
+
+					// set current dequeued cell to visited.
+					// save the setTimeout id for later usage if user want to reset.
+					const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+						grid[val.y][val.x].isVisited = true;
+					}, 10);
+					visitedTimeout.push(id);
+
+					// push to the queue for current iteration value
+					queue.enqueue(val);
+				}
+			}
+		}
+
+		const path: Edge[] = [];
+		let current = grid[end[0]][end[1]];
+
+		while (current) {
+			path.push(current);
+			if (!current.prev) break;
+			current = current.prev;
+		}
+
+		// traverse backward and animate
+		for (let i = path.length; i > 0; i--) {
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+				grid[path[i].y][path[i].x].isPath = true;
 			}, 100);
 			pathTimeout.push(id);
 		}
