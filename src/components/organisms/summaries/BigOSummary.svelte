@@ -1,3 +1,7 @@
+<script>
+	import { base } from '$app/paths';
+</script>
+
 <div>
 	<div>
 		<h1 class="text-4xl font-bold">Big O Notation</h1>
@@ -115,7 +119,7 @@
 		<p class="py-4">Here is the cheating-chart to compare between each complexity.</p>
 
 		<img
-			src="/media/images/big-o-cheatsheet.png"
+			src={`${base}/media/images/big-o-cheatsheet.png`}
 			alt="Big O Complexity Chart"
 			height="500"
 			width="800"
