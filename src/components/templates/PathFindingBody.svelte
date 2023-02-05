@@ -13,7 +13,7 @@
 	 * of columns (Y) and rows (X).
 	 **/
 	let gridAlgo: Grid['algorithm'] = 'dijkstra';
-	let gridSize: Grid['size'] = 'tiny';
+	let gridSize: Grid['size'] = 'medium';
 	let columns = 50;
 	let rows = 50;
 
