@@ -1,9 +1,14 @@
 import type { Grid } from '../types/grid';
 import type { Edge } from './priorityQueue';
 
-export function save(grid: Edge[][], gridSize: Grid['size']) {
+export function save(start: number[], end: number[], grid: Edge[][], gridSize: Grid['size']) {
+	const startEdge = start.length ? grid[start[0]][start[1]] : null;
+	const endEdge = end.length ? grid[end[0]][end[1]] : null;
+
 	// Save grid and its size to localStorage.
 	const savedGrid = {
+		start: startEdge,
+		end: endEdge,
 		size: gridSize,
 		grid: grid,
 	};

@@ -27,6 +27,10 @@
 	let start: number[] = [];
 	let end: number[] = [];
 
+	// States to maintain and trigger the toast
+	let triggerPrompt: boolean;
+	let triggerPromptText: string = '';
+
 	/**
 	 * ReturnType<typeof setTimeout> is a type that represents
 	 * the return type of the setTimeout function, which is a number
@@ -487,7 +491,19 @@
 		>
 
 		<!-- SAVE BUTTON -->
-		<button class="btn-outline btn flex gap-2 px-6" on:click={() => save(grid, gridSize)}>
+		<button
+			class="btn-outline btn flex gap-2 px-6"
+			on:click={() => {
+				save(start, end, grid, gridSize);
+
+				triggerPrompt = true;
+				triggerPromptText = 'Saving current grid locally...';
+
+				setTimeout(() => {
+					triggerPrompt = false;
+				}, 1000);
+			}}
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
@@ -518,8 +534,21 @@
 
 				// change the grid matrix values
 				setTimeout(() => {
+					if (parsed.start) {
+						start = [parsed.start.y, parsed.start.y];
+					} else if (parsed.end) {
+						end = [parsed.end.y, parsed.end.y];
+					}
+
 					grid = parsed.grid;
 				}, 50);
+
+				triggerPrompt = true;
+				triggerPromptText = 'Loading last saved grid...';
+
+				setTimeout(() => {
+					triggerPrompt = false;
+				}, 1000);
 			}}
 		>
 			<svg
@@ -540,7 +569,7 @@
 		>
 	</div>
 
-	<div class="flex gap-2 px-2">
+	<div class="flex items-center gap-2 px-2">
 		<button class="btn flex gap-2 px-6" on:click={play}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -599,6 +628,13 @@
 			</svg>
 			Reset</button
 		>
+
+		<!-- SMALL TEXT PROMPT -->
+		{#if triggerPrompt}
+			<div class="px-2">
+				<p class="italic text-gray-500">{triggerPromptText}</p>
+			</div>
+		{/if}
 	</div>
 </div>
 
