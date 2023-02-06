@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { clearResult } from '../../libs/clearResult';
+	import { getNeighbors } from '../../libs/getNeighbors';
 	import { initGrid } from '../../libs/initGrid';
 	import { PriorityQueue, type Edge } from '../../libs/priorityQueue';
 	import { Queue } from '../../libs/queue';
@@ -104,6 +105,16 @@
 		grid[colIdx][rowIdx].isWall = !grid[colIdx][rowIdx].isWall;
 	}
 
+	function handleDragWall(colIdx: number, rowIdx: number) {
+		if (
+			grid[colIdx][rowIdx].isStart ||
+			grid[colIdx][rowIdx].isEnd ||
+			grid[colIdx][rowIdx].isWall
+		)
+			return;
+		grid[colIdx][rowIdx].isWall = true;
+	}
+
 	function reset() {
 		// Clear all process for visited vertices
 		for (let i = 0; i < visitedTimeout.length; i++) {
@@ -129,28 +140,7 @@
 		if (gridAlgo === 'dijkstra') return dijkstra();
 		if (gridAlgo === 'dfs') return dfs(grid[start[0]][start[1]]);
 		if (gridAlgo === 'bfs') return bfs(grid[start[0]][start[1]]);
-	}
-
-	function getNeighbors(target: Edge) {
-		const up =
-			grid[target.y - 1] && grid[target.y - 1][target.x]
-				? grid[target.y - 1][target.x]
-				: null;
-		const right =
-			grid[target.y] && grid[target.y][target.x + 1] ? grid[target.y][target.x + 1] : null;
-		const left =
-			grid[target.y] && grid[target.y][target.x - 1] ? grid[target.y][target.x - 1] : null;
-		const down =
-			grid[target.y + 1] && grid[target.y + 1][target.x]
-				? grid[target.y + 1][target.x]
-				: null;
-
-		/**
-		 * Look all neighbors of current dequeued cell,
-		 * if the neighbors either up, right, left, or down does not exist,
-		 * remove from the array.
-		 **/
-		return [up, right, left, down].filter((v) => v !== null) as Edge[];
+		if (gridAlgo === 'a*') return aStar();
 	}
 
 	function dijkstra() {
@@ -238,7 +228,7 @@
 			visitedTimeout = [...visitedTimeout, id];
 
 			// get all current dequeued neighbors
-			const neighbors = getNeighbors(temp);
+			const neighbors = getNeighbors(grid, temp);
 
 			// ...calculate the new distance of each vertex.
 			// distance of previous dequeued value + current vertex weight
@@ -260,6 +250,8 @@
 			}
 		}
 	}
+
+	function aStar() {}
 
 	function dfs(vertex: Edge) {
 		const result: Edge[][] = [];
@@ -288,7 +280,7 @@
 			visitedTimeout.push(id);
 
 			// get all current dequeued neighbors
-			const neighbors = getNeighbors(v);
+			const neighbors = getNeighbors(grid, v);
 
 			// ...calculate the new distance of each vertex.
 			// distance of previous dequeued value + current vertex weight
@@ -340,7 +332,7 @@
 			if (dequeued.y === end[0] && dequeued.x === end[1]) break;
 
 			// get all current dequeued neighbors
-			const neighbors = getNeighbors(dequeued);
+			const neighbors = getNeighbors(grid, dequeued);
 
 			for (let i = 0; i < neighbors.length; i++) {
 				const val = grid[neighbors[i].y][neighbors[i].x];
@@ -391,6 +383,7 @@
 				<select bind:value={gridAlgo} class="select-bordered select">
 					<option disabled>Select Algorithms</option>
 					<option value="dijkstra" selected>Dijkstra's Algorithm</option>
+					<option value="a*">A* Algorithm</option>
 					<option value="dfs">Depth First Search (DFS)</option>
 					<option value="bfs">Breadth First Search (BFS)</option>
 				</select>
@@ -626,6 +619,11 @@
               ${row.isVisited && !row.isStart && !row.isEnd ? 'bg-gray-600' : ''}
               ${row.isPath && !row.isStart && !row.isEnd ? '!bg-blue-500' : ''}
             `}
+								on:dragstart={(e) => e.preventDefault()}
+								on:mousemove={(e) => {
+									if (e.buttons !== 1) return;
+									handleDragWall(colIdx, rowIdx);
+								}}
 								on:keydown={() => handleCellClick(colIdx, rowIdx)}
 								on:click={() => handleCellClick(colIdx, rowIdx)}
 							/>
