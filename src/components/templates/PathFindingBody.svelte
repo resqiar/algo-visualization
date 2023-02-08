@@ -532,12 +532,12 @@
 					gridSize = parsed.size;
 				}, 50);
 
-				// change the grid matrix values
+        // change the grid matrix values
 				setTimeout(() => {
 					if (parsed.start) {
-						start = [parsed.start.y, parsed.start.y];
+						start = [parsed.start.y, parsed.start.x];
 					} else if (parsed.end) {
-						end = [parsed.end.y, parsed.end.y];
+						end = [parsed.end.y, parsed.end.x];
 					}
 
 					grid = parsed.grid;
