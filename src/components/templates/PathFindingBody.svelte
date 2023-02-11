@@ -256,7 +256,129 @@
 		}
 	}
 
-	function aStar() {}
+	function aStar() {
+		const pq = new PriorityQueue();
+		const distance: { [vtx: string]: number } = {};
+		const fScore: { [vtx: string]: number } = {};
+		const from: { [vtx: string]: Edge | null } = {};
+
+		/**
+		 * If the algorithm has already fired,
+		 * that means the grid already present a result,
+		 * reset all the isVisited value inside all the edges to false.
+		 * reset all the isPath value inside all the edges to false.
+		 */
+		if (isResume) grid = clearResult(grid, columns, rows);
+
+		// Initialize data
+		for (let y = 0; y < columns; y++) {
+			for (let x = 0; x < rows; x++) {
+				if (grid[y][x].isStart) {
+					pq.enqueue(grid[y][x], 0);
+					distance[`${y},${x}`] = 0;
+					fScore[`${y},${x}`] = 0;
+				} else {
+					pq.enqueue(grid[y][x], Infinity);
+					distance[`${y},${x}`] = Infinity;
+					fScore[`${y},${x}`] = Infinity;
+				}
+				from[`${x},${y}`] = null;
+			}
+		}
+
+		// set isResume to true, since the algo already in process.
+		isResume = true;
+
+		while (pq.heap.length) {
+			const dequeued = pq.dequeue();
+
+			if (!dequeued) return;
+
+			// ...if it's the end vertex. If it is, then construct
+			// the path by tracing back the previous vertices from the end to the start.
+			if (dequeued.vtx.isEnd) {
+				const result = [[dequeued.vtx.x, dequeued.vtx.y]];
+
+				let temp = dequeued.vtx;
+
+				// Trace back (Backtracking) the from value until
+				// it found the starting vertex.
+				while (true) {
+					if (temp.isStart) break;
+
+					const current = from[`${temp.y},${temp.x}`];
+					if (!current) break;
+
+					result.push([current.y, current.x]);
+					temp = current;
+				}
+
+				for (let i = result.length - 1; i > 0; i--) {
+					if (!result[i]) continue;
+
+					// set grid to result path.
+					// save the setTimeout id for later usage if user want to reset.
+					const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+						grid[result[i][0]][result[i][1]].isPath = true;
+					}, 50);
+
+					// push the timeout id to pathTimeout
+					pathTimeout = [...pathTimeout, id];
+				}
+
+				return;
+			}
+
+			const temp = grid[dequeued.vtx.y][dequeued.vtx.x];
+
+			// If current dequeued cell is a wall, just continue the iteration.
+			if (temp.isWall) continue;
+
+			// set current dequeued cell to visited.
+			// save the setTimeout id for later usage if user want to reset.
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+				grid[dequeued.vtx.y][dequeued.vtx.x].isVisited = true;
+			}, 50);
+
+			// push the timeout id to visitedTimeout
+			visitedTimeout = [...visitedTimeout, id];
+
+			// get all current dequeued neighbors
+			const neighbors = getNeighbors(grid, temp);
+
+			for (let i = 0; i < neighbors.length; i++) {
+				const current = neighbors[i];
+
+				/**
+				 * A* basically need 3 values to function properly;
+				 * gScore = a real distance calculated from each vertex distance.
+				 * hScore = Heuristic (educated guess) from current vertex to end vertex.
+				 * total/final = gScore + hScore.
+				 **/
+				const gScore = distance[`${temp.y},${temp.x}`] + current.weight;
+				const hScore = heuristic(current);
+				const final = gScore + hScore;
+
+				// If final score is less than saved fScore
+				if (final < fScore[`${current.y},${current.x}`]) {
+					// Update and do the same as Dijkstra.
+					distance[`${current.y},${current.x}`] = gScore;
+					fScore[`${current.y},${current.x}`] = final;
+					from[`${current.y},${current.x}`] = temp;
+					pq.enqueue(current, final);
+				}
+			}
+		}
+
+		/**
+		 * Manhattan Distance Heuristic.
+		 * Calculates the estimated cost of the end node from a given current node.
+		 * It uses an absolute value (non-negative).
+		 */
+		function heuristic(current: Edge): number {
+			return Math.abs(current.x - end[1]) + Math.abs(current.y - end[0]);
+		}
+	}
 
 	function dfs(vertex: Edge) {
 		const result: Edge[][] = [];
