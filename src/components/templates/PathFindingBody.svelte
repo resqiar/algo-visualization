@@ -386,7 +386,8 @@
 
 		(function helper(v: Edge, path: Edge[]) {
 			if (!v) return;
-			if ((v.y === end[0] && v.x) === end[1]) {
+			if (v.isWall) return;
+			if (v.y === end[0] && v.x === end[1]) {
 				/**
 				 * The purpose of adding the current path to result is
 				 * to keep track of all the paths found, so that later,
@@ -394,7 +395,6 @@
 				 **/
 				result.push([...path, v]);
 			}
-			if (v.isWall) return;
 
 			// push current vertex to visited
 			visited.add(`${v.y},${v.x}`);
@@ -413,8 +413,8 @@
 			// distance of previous dequeued value + current vertex weight
 			for (let i = 0; i < neighbors.length; i++) {
 				const val = grid[neighbors[i].y][neighbors[i].x];
-				// if current node is not visited, otherwise ignore
-				if (!visited.has(`${val.y},${val.x}`)) helper(val, [...path, v]);
+				// if current node is not visited and the result is not exist yet, otherwise ignore
+				if (!visited.has(`${val.y},${val.x}`) && !result.length) helper(val, [...path, v]);
 			}
 		})(vertex, []);
 
