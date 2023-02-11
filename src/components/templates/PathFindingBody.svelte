@@ -394,6 +394,7 @@
 				 * the shortest path can be calculated based on the length.
 				 **/
 				result.push([...path, v]);
+				return;
 			}
 
 			// push current vertex to visited
