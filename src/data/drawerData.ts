@@ -17,7 +17,7 @@ export const drawerData: IDrawerData[] = [
 	},
 	{
 		id: 1,
-		title: 'Path-finding Algorithm',
+		title: 'Path Finding Algorithm',
 		component: PathFindingBody,
 	},
 	{
