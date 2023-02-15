@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { generateRandomInRange } from '../../libs/generateRandomInRange';
 	import type { Sort } from '../../types/sort';
 
 	const ITERATION: number = 500;
@@ -12,7 +13,7 @@
 
 	function initData() {
 		for (let i = 0; i < ITERATION; i++) {
-			const randomize = Math.round(Math.random() * ITERATION);
+			const randomize = generateRandomInRange(10, ITERATION);
 			data = [...data, randomize];
 		}
 	}
