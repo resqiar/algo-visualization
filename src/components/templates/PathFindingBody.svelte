@@ -212,7 +212,7 @@
 					}, 50);
 
 					// push the timeout id to pathTimeout
-					pathTimeout = [...pathTimeout, id];
+					pathTimeout.push(id);
 				}
 
 				return;
@@ -230,7 +230,7 @@
 			}, 50);
 
 			// push the timeout id to visitedTimeout
-			visitedTimeout = [...visitedTimeout, id];
+			visitedTimeout.push(id);
 
 			// get all current dequeued neighbors
 			const neighbors = getNeighbors(grid, temp);
@@ -323,7 +323,7 @@
 					}, 50);
 
 					// push the timeout id to pathTimeout
-					pathTimeout = [...pathTimeout, id];
+					pathTimeout.push(id);
 				}
 
 				return;
@@ -341,7 +341,7 @@
 			}, 50);
 
 			// push the timeout id to visitedTimeout
-			visitedTimeout = [...visitedTimeout, id];
+			visitedTimeout.push(id);
 
 			// get all current dequeued neighbors
 			const neighbors = getNeighbors(grid, temp);
