@@ -1,12 +1,12 @@
 <script lang="ts">
-	export let triggerSave: () => void;
-	export let triggerLoad: () => void;
-	export let triggerStart: () => void;
-	export let triggerEnd: () => void;
-	export let triggerPlay: () => void;
-	export let triggerClear: () => void;
-	export let triggerReset: () => void;
-	export let triggerRandomize: () => void;
+	export let triggerSave: () => void = () => {};
+	export let triggerLoad: () => void = () => {};
+	export let triggerStart: () => void = () => {};
+	export let triggerEnd: () => void = () => {};
+	export let triggerPlay: () => void = () => {};
+	export let triggerClear: () => void = () => {};
+	export let triggerReset: () => void = () => {};
+	export let triggerRandomize: () => void = () => {};
 
 	function handleKeyboard(e: KeyboardEvent) {
 		// Trigger Save
