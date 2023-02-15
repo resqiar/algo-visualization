@@ -3,7 +3,7 @@
 </script>
 
 <div class="dropdown-end dropdown">
-	<label tabindex="-1" class="btn-ghost btn m-1 flex gap-1" for="theme-change-menu">
+	<label tabindex="-1" class="btn btn-ghost m-1 flex gap-1" for="theme-change-menu">
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			class="h-5 w-5"
@@ -26,10 +26,7 @@
 	>
 		{#each themeLight as value}
 			<li>
-				<button
-					data-set-theme={value === 'Default' ? '' : value.toLowerCase()}
-					data-act-class="ACTIVECLASS"
-				>
+				<button data-set-theme={value.toLowerCase()} data-act-class="ACTIVECLASS">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						class="h-4 w-4"

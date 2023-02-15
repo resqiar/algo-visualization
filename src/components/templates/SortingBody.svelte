@@ -82,15 +82,7 @@
 <div>
 	<div class="flex w-full items-end justify-center px-4 pt-6">
 		{#each data as key}
-			<div class="bar" style={`height:${key}px;`} />
+			<div class="bar dark-white w-[1px] bg-black px-[1.3px]" style={`height:${key}px;`} />
 		{/each}
 	</div>
 </div>
-
-<style>
-	.bar {
-		padding: 0px 1.3px;
-		width: 1px;
-		background: #000;
-	}
-</style>
