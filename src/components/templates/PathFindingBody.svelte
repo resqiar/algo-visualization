@@ -796,10 +796,10 @@
 							<td
 								class={`
               cursor-pointer border border-gray-700 p-1 text-[6px] font-bold
-              ${row.isWall ? 'bg-black' : ''}
+              ${row.isWall ? 'dark-white bg-black' : ''}
               ${row.isStart ? 'bg-yellow-300' : ''}
               ${row.isEnd ? 'bg-red-500' : ''}
-              ${row.isVisited && !row.isStart && !row.isEnd ? 'bg-gray-600' : ''}
+              ${row.isVisited && !row.isStart && !row.isEnd ? 'bg-gray-700' : ''}
               ${row.isPath && !row.isStart && !row.isEnd ? '!bg-blue-500' : ''}
             `}
 								on:dragstart={(e) => e.preventDefault()}
