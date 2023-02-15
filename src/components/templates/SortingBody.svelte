@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { generateRandomInRange } from '../../libs/generateRandomInRange';
 	import type { Sort } from '../../types/sort';
+	import KeyboardHandler from '../atoms/utils/KeyboardHandler.svelte';
 
 	const ITERATION: number = 300;
 	const MAX_HEIGHT: number = 500;
@@ -95,7 +96,7 @@
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
+					d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"
 				/>
 			</svg>
 			Randomize</button
@@ -139,12 +140,12 @@
 				<path
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
+					d="M5.25 7.5A2.25 2.25 0 017.5 5.25h9a2.25 2.25 0 012.25 2.25v9a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25v-9z"
 				/>
 			</svg>
 			Stop</button
 		>
-		<p class="px-2 pt-1 text-xs font-bold text-gray-400">Ctrl + Space</p>
+		<p class="px-2 pt-1 text-xs font-bold text-gray-400">Delete</p>
 	</div>
 </div>
 
@@ -156,3 +157,6 @@
 		{/each}
 	</div>
 </div>
+
+<!-- KEYBOARD HANDLER  -->
+<KeyboardHandler triggerPlay={play} triggerClear={stop} triggerRandomize={initData} />
