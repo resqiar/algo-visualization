@@ -34,8 +34,12 @@
 	}
 
 	function play() {
+		// reset the timeout id array
+		sortTimeout = [];
+
 		if (sortAlgo === 'bubble') return bubbleSort();
 		if (sortAlgo === 'selection') return selectionSort();
+		if (sortAlgo === 'insertion') return insertionSort();
 	}
 
 	function stop() {
@@ -93,6 +97,36 @@
 		}
 	}
 
+	function insertionSort() {
+		for (let outerIdx = 1; outerIdx < data.length; outerIdx++) {
+			// Temporary index for swapping
+			let tempIdx = outerIdx;
+
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+				// Do inner loop as long as the index is not less than 0
+				// and the inner value is bigger than temporary value.
+				for (
+					let innerIdx = tempIdx - 1;
+					innerIdx >= 0 && data[innerIdx] > data[tempIdx];
+					innerIdx--
+				) {
+					const inner = data[innerIdx];
+
+					// if inner value is bigger than temporary value,
+					// swap between the two and update the temp idx to inner idx.
+					if (inner > data[tempIdx]) {
+						swap(innerIdx, tempIdx);
+						tempIdx = innerIdx;
+					}
+				}
+			}, outerIdx * 10);
+
+			// push setTimeout id into an array,
+			// this way we can clear the timeout later if user stop.
+			sortTimeout.push(id);
+		}
+	}
+
 	function swap(firstIdx: number, secondIdx: number) {
 		const temp = data[firstIdx];
 		data[firstIdx] = data[secondIdx];
@@ -108,8 +142,8 @@
 				<option disabled>Select Algorithms</option>
 				<option value="bubble" selected>Bubble Sort</option>
 				<option value="selection">Selection Sort</option>
-				<option value="merge">Merge Sort</option>
 				<option value="insertion">Insertion Sort</option>
+				<option value="merge">Merge Sort</option>
 			</select>
 		</div>
 	</div>
