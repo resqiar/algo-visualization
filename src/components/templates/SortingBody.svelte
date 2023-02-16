@@ -35,6 +35,7 @@
 
 	function play() {
 		if (sortAlgo === 'bubble') return bubbleSort();
+		if (sortAlgo === 'selection') return selectionSort();
 	}
 
 	function stop() {
@@ -60,12 +61,42 @@
 				sortTimeout.push(id);
 			}
 		}
+	}
 
-		function swap(firstIdx: number, secondIdx: number) {
-			const temp = data[firstIdx];
-			data[firstIdx] = data[secondIdx];
-			data[secondIdx] = temp;
+	function selectionSort() {
+		for (let outerIdx = 0; outerIdx < data.length; outerIdx++) {
+			const current = data[outerIdx];
+			// set minimum value inside iterations
+			let minIdx = outerIdx;
+
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+				for (let innerIdx = outerIdx + 1; innerIdx < data.length; innerIdx++) {
+					const inner = data[innerIdx];
+
+					// if the value of inner < current minimum value
+					if (Math.min(inner, data[minIdx]) === inner) {
+						// update the minimum index
+						minIdx = innerIdx;
+					}
+				}
+
+				// if minimum changes, meaning that there is a smaller
+				// value inside the inner loop, then swap.
+				if (data[minIdx] !== current) {
+					swap(outerIdx, minIdx);
+				}
+			}, outerIdx * 10);
+
+			// push setTimeout id into an array,
+			// this way we can clear the timeout later if user stop.
+			sortTimeout.push(id);
 		}
+	}
+
+	function swap(firstIdx: number, secondIdx: number) {
+		const temp = data[firstIdx];
+		data[firstIdx] = data[secondIdx];
+		data[secondIdx] = temp;
 	}
 </script>
 
@@ -76,6 +107,7 @@
 			<select bind:value={sortAlgo} class="select-bordered select">
 				<option disabled>Select Algorithms</option>
 				<option value="bubble" selected>Bubble Sort</option>
+				<option value="selection">Selection Sort</option>
 				<option value="merge">Merge Sort</option>
 				<option value="insertion">Insertion Sort</option>
 			</select>

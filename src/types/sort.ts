@@ -1,3 +1,3 @@
 export type Sort = {
-	algorithm: 'bubble' | 'merge' | 'insertion';
+	algorithm: 'bubble' | 'selection' | 'merge' | 'insertion';
 };
