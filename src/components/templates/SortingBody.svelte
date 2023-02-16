@@ -7,6 +7,7 @@
 	const ITERATION: number = 300;
 	const MAX_HEIGHT: number = 500;
 	const MIN_HEIGHT: number = 5;
+	const DELAY: number = 50; // millisecond delay
 
 	let data: number[] = [];
 	let sortAlgo: Sort['algorithm'] = 'bubble';
@@ -50,20 +51,20 @@
 
 	function bubbleSort() {
 		for (let i = data.length - 1; i >= 0; i--) {
-			for (let j = 0; j < i; j++) {
-				const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
+				for (let j = 0; j < i; j++) {
 					const current = data[j];
 					const next = data[j + 1];
 
 					if (current > next) {
 						swap(j, j + 1);
 					}
-				}, 10);
+				}
+			}, (data.length - i) * DELAY);
 
-				// push setTimeout id into an array,
-				// this way we can clear the timeout later if user stop.
-				sortTimeout.push(id);
-			}
+			// push setTimeout id into an array,
+			// this way we can clear the timeout later if user stop.
+			sortTimeout.push(id);
 		}
 	}
 
@@ -89,7 +90,7 @@
 				if (data[minIdx] !== current) {
 					swap(outerIdx, minIdx);
 				}
-			}, outerIdx * 10);
+			}, outerIdx * DELAY);
 
 			// push setTimeout id into an array,
 			// this way we can clear the timeout later if user stop.
@@ -119,7 +120,7 @@
 						tempIdx = innerIdx;
 					}
 				}
-			}, outerIdx * 10);
+			}, outerIdx * DELAY);
 
 			// push setTimeout id into an array,
 			// this way we can clear the timeout later if user stop.
