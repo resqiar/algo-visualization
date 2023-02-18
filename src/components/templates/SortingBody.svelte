@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { bubbleSort } from '../../libs/algo/sorting/bubbleSort';
+	import { insertionSort } from '../../libs/algo/sorting/insertionSort';
 	import { mergeSort } from '../../libs/algo/sorting/mergeSort';
 	import { selectionSort } from '../../libs/algo/sorting/selectionSort';
 	import { generateRandomInRange } from '../../libs/generateRandomInRange';
@@ -42,26 +43,26 @@
 
 	function initData() {
 		// reset the data (if any)
-		data = [];
+		sortData.set([]);
 
 		for (let i = 0; i < ITERATION; i++) {
 			const randomize = generateRandomInRange(MIN_HEIGHT, MAX_HEIGHT);
 
 			// update the original array from svelte store
-			sortData.update((v) => {
-				v = [...data, randomize];
-				return v;
+			sortData.update((value) => {
+				value = [...data, randomize];
+				return value;
 			});
 		}
 	}
 
 	async function play() {
 		// reset the timeout id array
-		sortTimeout = [];
+		timeout.set([]);
 
 		if (sortAlgo === 'bubble') return bubbleSort(DELAY);
 		if (sortAlgo === 'selection') return selectionSort(DELAY);
-		if (sortAlgo === 'insertion') return insertionSort();
+		if (sortAlgo === 'insertion') return insertionSort(DELAY);
 		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1, DELAY);
 	}
 
@@ -69,42 +70,6 @@
 		for (let i = 0; i < sortTimeout.length; i++) {
 			clearTimeout(sortTimeout[i]);
 		}
-	}
-
-	function insertionSort() {
-		for (let outerIdx = 1; outerIdx < data.length; outerIdx++) {
-			// Temporary index for swapping
-			let tempIdx = outerIdx;
-
-			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
-				// Do inner loop as long as the index is not less than 0
-				// and the inner value is bigger than temporary value.
-				for (
-					let innerIdx = tempIdx - 1;
-					innerIdx >= 0 && data[innerIdx] > data[tempIdx];
-					innerIdx--
-				) {
-					const inner = data[innerIdx];
-
-					// if inner value is bigger than temporary value,
-					// swap between the two and update the temp idx to inner idx.
-					if (inner > data[tempIdx]) {
-						swap(innerIdx, tempIdx);
-						tempIdx = innerIdx;
-					}
-				}
-			}, outerIdx * DELAY);
-
-			// push setTimeout id into an array,
-			// this way we can clear the timeout later if user stop.
-			sortTimeout.push(id);
-		}
-	}
-
-	function swap(firstIdx: number, secondIdx: number) {
-		const temp = data[firstIdx];
-		data[firstIdx] = data[secondIdx];
-		data[secondIdx] = temp;
 	}
 </script>
 
