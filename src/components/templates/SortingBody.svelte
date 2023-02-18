@@ -34,13 +34,14 @@
 		}
 	}
 
-	function play() {
+	async function play() {
 		// reset the timeout id array
 		sortTimeout = [];
 
 		if (sortAlgo === 'bubble') return bubbleSort();
 		if (sortAlgo === 'selection') return selectionSort();
 		if (sortAlgo === 'insertion') return insertionSort();
+		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1);
 	}
 
 	function stop() {
@@ -133,6 +134,53 @@
 		data[firstIdx] = data[secondIdx];
 		data[secondIdx] = temp;
 	}
+
+	async function mergeSort(startIdx: number, endIdx: number) {
+		if (startIdx >= endIdx) return;
+		const midIdx = Math.floor((startIdx + endIdx) / 2);
+
+		await mergeSort(startIdx, midIdx);
+		await mergeSort(midIdx + 1, endIdx);
+		await merge(startIdx, midIdx, endIdx);
+	}
+
+	async function merge(startIdx: number, midIdx: number, endIdx: number) {
+		const temp = [];
+		let leftIdx = startIdx;
+		let rightIdx = midIdx + 1;
+
+		while (leftIdx <= midIdx && rightIdx <= endIdx) {
+			if (data[leftIdx] < data[rightIdx]) {
+				temp.push(data[leftIdx]);
+				leftIdx++;
+			} else {
+				temp.push(data[rightIdx]);
+				rightIdx++;
+			}
+		}
+
+		// If there are leftovers, just push the remaining
+		while (leftIdx <= midIdx) {
+			temp.push(data[leftIdx]);
+			leftIdx++;
+		}
+
+		// If there are leftovers, just push the remaining
+		while (rightIdx <= endIdx) {
+			temp.push(data[rightIdx]);
+			rightIdx++;
+		}
+
+		let tempPointer = 0;
+
+		for (let i = startIdx; i <= endIdx; i++) {
+			data[i] = temp[tempPointer];
+			tempPointer++;
+		}
+
+		// Give a delay but dont do it async, wait until done
+		await new Promise((resolve) => setTimeout(resolve, DELAY));
+	}
 </script>
 
 <div class="flex items-start gap-2 pl-12">
@@ -220,7 +268,11 @@
 <div>
 	<div class="flex w-full items-end justify-center px-4 pt-6">
 		{#each data as key}
-			<div class="bar dark-white w-[2px] bg-black px-[2px]" style={`height:${key}px;`} />
+			<div
+				class="bar dark-white w-[2px] bg-black px-[2px]"
+				style={`height:${key}px;`}
+				id={`bar-${key}`}
+			/>
 		{/each}
 	</div>
 </div>
