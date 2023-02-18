@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { mergeSort } from '../../libs/algo/sorting/mergeSort';
 	import { generateRandomInRange } from '../../libs/generateRandomInRange';
+	import { sortData } from '../../stores/sortStore';
 	import type { Sort } from '../../types/sort';
 	import KeyboardHandler from '../atoms/utils/KeyboardHandler.svelte';
 
@@ -9,8 +11,18 @@
 	const MIN_HEIGHT: number = 5;
 	const DELAY: number = 50; // millisecond delay
 
-	let data: number[] = [];
+	let data: number[];
 	let sortAlgo: Sort['algorithm'] = 'bubble';
+
+	/**
+	 * Subscribe to original array update/changes from
+	 * svelte store. This way when there is any change to
+	 * the original array, "data" will also be changed and can be used
+	 * to update the bars.
+	 **/
+	sortData.subscribe((value) => {
+		data = value;
+	});
 
 	/**
 	 * ReturnType<typeof setTimeout> is a type that represents
@@ -30,7 +42,12 @@
 
 		for (let i = 0; i < ITERATION; i++) {
 			const randomize = generateRandomInRange(MIN_HEIGHT, MAX_HEIGHT);
-			data = [...data, randomize];
+
+			// update the original array from svelte store
+			sortData.update((v) => {
+				v = [...data, randomize];
+				return v;
+			});
 		}
 	}
 
@@ -41,7 +58,7 @@
 		if (sortAlgo === 'bubble') return bubbleSort();
 		if (sortAlgo === 'selection') return selectionSort();
 		if (sortAlgo === 'insertion') return insertionSort();
-		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1);
+		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1, DELAY);
 	}
 
 	function stop() {
@@ -133,53 +150,6 @@
 		const temp = data[firstIdx];
 		data[firstIdx] = data[secondIdx];
 		data[secondIdx] = temp;
-	}
-
-	async function mergeSort(startIdx: number, endIdx: number) {
-		if (startIdx >= endIdx) return;
-		const midIdx = Math.floor((startIdx + endIdx) / 2);
-
-		await mergeSort(startIdx, midIdx);
-		await mergeSort(midIdx + 1, endIdx);
-		await merge(startIdx, midIdx, endIdx);
-	}
-
-	async function merge(startIdx: number, midIdx: number, endIdx: number) {
-		const temp = [];
-		let leftIdx = startIdx;
-		let rightIdx = midIdx + 1;
-
-		while (leftIdx <= midIdx && rightIdx <= endIdx) {
-			if (data[leftIdx] < data[rightIdx]) {
-				temp.push(data[leftIdx]);
-				leftIdx++;
-			} else {
-				temp.push(data[rightIdx]);
-				rightIdx++;
-			}
-		}
-
-		// If there are leftovers, just push the remaining
-		while (leftIdx <= midIdx) {
-			temp.push(data[leftIdx]);
-			leftIdx++;
-		}
-
-		// If there are leftovers, just push the remaining
-		while (rightIdx <= endIdx) {
-			temp.push(data[rightIdx]);
-			rightIdx++;
-		}
-
-		let tempPointer = 0;
-
-		for (let i = startIdx; i <= endIdx; i++) {
-			data[i] = temp[tempPointer];
-			tempPointer++;
-		}
-
-		// Give a delay but dont do it async, wait until done
-		await new Promise((resolve) => setTimeout(resolve, DELAY));
 	}
 </script>
 
