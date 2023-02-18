@@ -10,4 +10,5 @@ What I learn from building this:
 2. SvelteKit
 3. DaisyUI
 4. Plot data to chart (ChartJS)
-5. Algorithms
+5. Data Structures & Algorithms
+6. Animating algorithms
