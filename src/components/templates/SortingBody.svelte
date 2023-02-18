@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { bubbleSort } from '../../libs/algo/sorting/bubbleSort';
 	import { mergeSort } from '../../libs/algo/sorting/mergeSort';
 	import { generateRandomInRange } from '../../libs/generateRandomInRange';
-	import { sortData } from '../../stores/sortStore';
+	import { sortData, timeout } from '../../stores/sortStore';
 	import type { Sort } from '../../types/sort';
 	import KeyboardHandler from '../atoms/utils/KeyboardHandler.svelte';
 
@@ -11,15 +12,14 @@
 	const MIN_HEIGHT: number = 5;
 	const DELAY: number = 50; // millisecond delay
 
-	let data: number[];
 	let sortAlgo: Sort['algorithm'] = 'bubble';
-
 	/**
 	 * Subscribe to original array update/changes from
 	 * svelte store. This way when there is any change to
 	 * the original array, "data" will also be changed and can be used
 	 * to update the bars.
 	 **/
+	let data: number[];
 	sortData.subscribe((value) => {
 		data = value;
 	});
@@ -31,6 +31,9 @@
 	 * to clearTimeout all the process when doing reset/stop.
 	 **/
 	let sortTimeout: ReturnType<typeof setTimeout>[] = [];
+	timeout.subscribe((value) => {
+		sortTimeout = value;
+	});
 
 	onMount(() => {
 		initData();
@@ -55,7 +58,7 @@
 		// reset the timeout id array
 		sortTimeout = [];
 
-		if (sortAlgo === 'bubble') return bubbleSort();
+		if (sortAlgo === 'bubble') return bubbleSort(DELAY);
 		if (sortAlgo === 'selection') return selectionSort();
 		if (sortAlgo === 'insertion') return insertionSort();
 		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1, DELAY);
@@ -64,25 +67,6 @@
 	function stop() {
 		for (let i = 0; i < sortTimeout.length; i++) {
 			clearTimeout(sortTimeout[i]);
-		}
-	}
-
-	function bubbleSort() {
-		for (let i = data.length - 1; i >= 0; i--) {
-			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
-				for (let j = 0; j < i; j++) {
-					const current = data[j];
-					const next = data[j + 1];
-
-					if (current > next) {
-						swap(j, j + 1);
-					}
-				}
-			}, (data.length - i) * DELAY);
-
-			// push setTimeout id into an array,
-			// this way we can clear the timeout later if user stop.
-			sortTimeout.push(id);
 		}
 	}
 
