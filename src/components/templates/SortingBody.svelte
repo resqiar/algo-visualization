@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { bubbleSort } from '../../libs/algo/sorting/bubbleSort';
 	import { mergeSort } from '../../libs/algo/sorting/mergeSort';
+	import { selectionSort } from '../../libs/algo/sorting/selectionSort';
 	import { generateRandomInRange } from '../../libs/generateRandomInRange';
 	import { sortData, timeout } from '../../stores/sortStore';
 	import type { Sort } from '../../types/sort';
@@ -59,7 +60,7 @@
 		sortTimeout = [];
 
 		if (sortAlgo === 'bubble') return bubbleSort(DELAY);
-		if (sortAlgo === 'selection') return selectionSort();
+		if (sortAlgo === 'selection') return selectionSort(DELAY);
 		if (sortAlgo === 'insertion') return insertionSort();
 		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1, DELAY);
 	}
@@ -67,36 +68,6 @@
 	function stop() {
 		for (let i = 0; i < sortTimeout.length; i++) {
 			clearTimeout(sortTimeout[i]);
-		}
-	}
-
-	function selectionSort() {
-		for (let outerIdx = 0; outerIdx < data.length; outerIdx++) {
-			const current = data[outerIdx];
-			// set minimum value inside iterations
-			let minIdx = outerIdx;
-
-			const id: ReturnType<typeof setTimeout> = setTimeout(() => {
-				for (let innerIdx = outerIdx + 1; innerIdx < data.length; innerIdx++) {
-					const inner = data[innerIdx];
-
-					// if the value of inner < current minimum value
-					if (Math.min(inner, data[minIdx]) === inner) {
-						// update the minimum index
-						minIdx = innerIdx;
-					}
-				}
-
-				// if minimum changes, meaning that there is a smaller
-				// value inside the inner loop, then swap.
-				if (data[minIdx] !== current) {
-					swap(outerIdx, minIdx);
-				}
-			}, outerIdx * DELAY);
-
-			// push setTimeout id into an array,
-			// this way we can clear the timeout later if user stop.
-			sortTimeout.push(id);
 		}
 	}
 
