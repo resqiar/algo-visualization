@@ -34,8 +34,8 @@ async function pivot(startIdx: number, endIdx: number, DELAY: number) {
 			lessIdx++;
 			// swap scouter with less
 			swap(scouterIdx, lessIdx);
-			// wait for 1 ms
-			await new Promise((resolve) => setTimeout(resolve, 1));
+			// wait for DELAY / 2 ms
+			await new Promise((resolve) => setTimeout(resolve, DELAY / 2));
 		}
 
 		scouterIdx++;
@@ -44,7 +44,7 @@ async function pivot(startIdx: number, endIdx: number, DELAY: number) {
 	// swap the captain with less
 	swap(captainIdx, lessIdx);
 
-	// wait for DELAY
+	// wait for FULL DELAY
 	await new Promise((resolve) => setTimeout(resolve, DELAY));
 
 	return lessIdx;
