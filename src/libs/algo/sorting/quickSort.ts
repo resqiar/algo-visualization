@@ -7,19 +7,23 @@ sortData.subscribe((value) => {
 	data = value;
 });
 
-export async function quickSort(startIdx: number = 0, endIdx: number = data.length - 1) {
+export async function quickSort(
+	startIdx: number = 0,
+	endIdx: number = data.length - 1,
+	DELAY: number
+) {
 	if (startIdx < endIdx) {
-		const mid = await pivot(startIdx, endIdx);
+		const mid = await pivot(startIdx, endIdx, DELAY);
 		// sort left side
-		quickSort(startIdx, mid);
+		quickSort(startIdx, mid, DELAY);
 		// sort right side
-		quickSort(mid + 1, endIdx);
+		quickSort(mid + 1, endIdx, DELAY);
 	}
 
 	return data;
 }
 
-async function pivot(startIdx: number, endIdx: number) {
+async function pivot(startIdx: number, endIdx: number, DELAY: number) {
 	let captainIdx = startIdx;
 	let scouterIdx = captainIdx + 1;
 	let lessIdx = startIdx;
@@ -30,7 +34,7 @@ async function pivot(startIdx: number, endIdx: number) {
 			lessIdx++;
 			// swap scouter with less
 			swap(scouterIdx, lessIdx);
-			// await for 1 ms
+			// wait for 1 ms
 			await new Promise((resolve) => setTimeout(resolve, 1));
 		}
 
@@ -40,8 +44,8 @@ async function pivot(startIdx: number, endIdx: number) {
 	// swap the captain with less
 	swap(captainIdx, lessIdx);
 
-	// await for DELAY
-	await new Promise((resolve) => setTimeout(resolve, 50));
+	// wait for DELAY
+	await new Promise((resolve) => setTimeout(resolve, DELAY));
 
 	return lessIdx;
 }

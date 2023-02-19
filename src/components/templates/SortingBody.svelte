@@ -65,7 +65,7 @@
 		if (sortAlgo === 'selection') return selectionSort(DELAY);
 		if (sortAlgo === 'insertion') return insertionSort(DELAY);
 		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1, DELAY);
-		if (sortAlgo === 'quick') return quickSort();
+		if (sortAlgo === 'quick') return quickSort(0, data.length - 1, DELAY);
 	}
 
 	function stop() {
