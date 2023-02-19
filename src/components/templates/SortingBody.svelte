@@ -3,6 +3,7 @@
 	import { bubbleSort } from '../../libs/algo/sorting/bubbleSort';
 	import { insertionSort } from '../../libs/algo/sorting/insertionSort';
 	import { mergeSort } from '../../libs/algo/sorting/mergeSort';
+	import { quickSort } from '../../libs/algo/sorting/quickSort';
 	import { selectionSort } from '../../libs/algo/sorting/selectionSort';
 	import { generateRandomInRange } from '../../libs/generateRandomInRange';
 	import { sortData, timeout } from '../../stores/sortStore';
@@ -64,6 +65,7 @@
 		if (sortAlgo === 'selection') return selectionSort(DELAY);
 		if (sortAlgo === 'insertion') return insertionSort(DELAY);
 		if (sortAlgo === 'merge') return mergeSort(0, data.length - 1, DELAY);
+		if (sortAlgo === 'quick') return quickSort();
 	}
 
 	function stop() {
@@ -83,6 +85,7 @@
 				<option value="selection">Selection Sort</option>
 				<option value="insertion">Insertion Sort</option>
 				<option value="merge">Merge Sort</option>
+				<option value="quick">Quick Sort</option>
 			</select>
 		</div>
 	</div>
