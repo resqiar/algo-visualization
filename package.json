@@ -36,7 +36,7 @@
   "type": "module",
   "dependencies": {
     "chart.js": "4.3.0",
-    "daisyui": "2.19.1",
+    "daisyui": "2.51.6",
     "theme-change": "^2.1.0"
   }
 }
