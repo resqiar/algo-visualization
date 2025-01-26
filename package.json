@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev --port 3030",
-    "build": "yarn run check && vite build",
+    "build": "npm run check && vite build",
     "package": "svelte-kit package",
     "preview": "vite preview --port 3030",
     "prepare": "svelte-kit sync",
