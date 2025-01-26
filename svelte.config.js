@@ -19,7 +19,7 @@ const config = {
     }),
     paths: {
       // change below to your repo name
-      base: !prod ? '' : '',
+      base: !prod ? '' : '/algo-visualization',
     },
   },
 };
